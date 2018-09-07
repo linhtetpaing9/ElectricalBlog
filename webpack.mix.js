@@ -33,6 +33,9 @@ mix.scripts([
 	'resources/assets/vendor/raphael/raphael.min.js',
 	'resources/assets/vendor/morrisjs/morris.min.js',
 	'resources/assets/data/morris-data.js',
+	'resources/assets/vendor/datatables/js/jquery.dataTables.min.js',
+	'resources/assets/vendor/datatables-plugins/dataTables.bootstrap.min.js',
+	'resources/assets/vendor/datatables-responsive/dataTables.responsive.js',
 	'resources/assets/dist/js/sb-admin-2.js',
 	], 'public/js/admin.js');
 
@@ -42,4 +45,5 @@ mix.styles([
 	'resources/assets/dist/css/sb-admin-2.css',
 	'resources/assets/vendor/morrisjs/morris.css',
 	'resources/assets/vendor/font-awesome/css/font-awesome.min.css',
+	'resources/assets/vendor/datatables-responsive/dataTables.responsive.css',
 	], 'public/css/admin.css');

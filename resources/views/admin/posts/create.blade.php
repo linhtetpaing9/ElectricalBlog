@@ -1,4 +1,4 @@
-@extends('layouts.main-page')
+@extends('admin-layouts.admin')
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/bootstrap-wysihtml5.css')}}">
@@ -8,34 +8,17 @@
 @endsection
 
 
-@section('header')
-<!-- Page Header -->
-
-<header class="masthead" style="background-image: url('../img/Electrical.png')">
-  <div class="overlay"></div>
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-md-10 mx-auto">
-        <div class="site-heading">
-          <h1>{{ config('app.name') }}</h1>
-          <span class="subheading">Your Electrical Career Personal Guide</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
-@endsection
-
 @section('content')
-
-<div class="col-lg-12 col-md-10 mx-auto" id="app">
-    <h4 class="card-title">Post Create</h4>
-      <form action="{{route('posts.store')}}" id="form-data" method="POST">
+<div class="row" id="app">
+    <div class="col-lg-12">
+        <h1 class="page-header">Post Create</h1>
+        <form action="{{route('posts.store')}}" id="form-data" method="POST">
         @csrf
         <div class="form-group">
           <label for="title">Title</label>
           <input type="text" class="form-control" placeholder="Title Here" name="title">
         </div>
+        
         <div class="form-group">
           <label for="categories">Categories</label>
           <select name="categories[]" class="form-control myclass" multiple="multiple">
@@ -52,7 +35,9 @@
             <button type="submit" class="btn btn-info">Submit</button>
           </div>
       </form>
+    </div>
 </div>
+
 
 
 

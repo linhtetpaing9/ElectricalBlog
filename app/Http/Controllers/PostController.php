@@ -16,9 +16,13 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::all([ 'title', 'body' ]);
-        // dd($posts);
         return view('posts.index', compact('posts'));
     }
+
+    public function create()
+    {
+    }
+    
     public function show(Post $post)
     {
         return view('posts.show', compact('post'));
@@ -33,12 +37,6 @@ class PostController extends Controller
         $categories = Category::pluck('name', 'id');
 
         return view('posts.edit', compact('post', 'categories', 'existPostCategoryId'));
-    }
-
-    public function create()
-    {
-        $categories = Category::pluck('name', 'id');
-        return view('posts.create', compact('categories'));
     }
 
     public function store(PostRequest $request)

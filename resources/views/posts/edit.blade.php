@@ -1,4 +1,4 @@
-@extends('layouts.main-page')
+@extends('admin-layouts.admin')
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/bootstrap-wysihtml5.css')}}">
@@ -6,27 +6,9 @@
 <link rel="stylesheet" href="{{asset('css/select2-bootstrap.min.css')}}">
 @endsection
 
-@section('header')
-<!-- Page Header -->
-
-<header class="masthead" style="background-image: url('../../img/Electrical.png')">
-  <div class="overlay"></div>
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-md-10 mx-auto">
-        <div class="site-heading">
-          <h1>{{ config('app.name') }}</h1>
-          <span class="subheading">Your Electrical Career Personal Guide</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
-@endsection
-
 @section('content')
-
-<div class="col-lg-12 col-md-10 mx-auto" id="app">
+<div class="row">
+  <div class="col-lg-12" id="app">
     <h4 class="card-title">Post Create</h4>
       <form action="{{route('posts.update', $post->id)}}" id="form-data" method="POST">
         @method('PATCH')
@@ -55,8 +37,8 @@
             <button type="submit" class="btn btn-info">Submit</button>
           </div>
       </form>
+  </div>
 </div>
-
 
 
 

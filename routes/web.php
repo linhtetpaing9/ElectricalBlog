@@ -23,20 +23,16 @@ Route::get('/categories/{category}/posts', 'PostCategoryController@show');
 
 Route::get('/api/categories', 'ApiController@countCategoriesByPosts');
 Route::get('/api/posts/{post}/issues', 'ApiController@apiIndexIssue');
-// Route::get('/api/posts', 'ApiController@apiIndexPost');
 
-
-
-// Route::get('/posts/create', 'PostController@create')->name('posts.create');
-// Route::get('/posts/{post}/edit', 'PostController@edit')->name('posts.edit');
-// Route::delete('/posts/{post}', 'PostController@destroy')->name('posts.destroy');
-// Route::patch('/posts/{post}', 'PostController@update')->name('posts.update');
-// Route::post('/posts', 'PostController@store')->name('posts.store');
-// Route::get('/posts/{post}', 'PostController@show')->name('posts.show');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/admin', function () {
     return view('admin-layouts.admin');
+});
+
+Route::prefix('admin')->group(function () {
+    Route::get('/posts/create', 'AdminPostController@create')->name('admin.posts.create');
+    Route::get('/posts', 'AdminPostController@index')->name('admin.posts.index');
 });
