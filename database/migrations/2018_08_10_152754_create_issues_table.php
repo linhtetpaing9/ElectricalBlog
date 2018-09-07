@@ -19,6 +19,9 @@ class CreateIssuesTable extends Migration
             $table->unsignedInteger('post_id');
             $table->string('title');
             $table->text('body');
+            $table->boolean('is_solved')->default(false);
+            $table->integer('agree_points')->default(0);
+            $table->integer('disagree_points')->default(0);
             $table->timestamps();
         });
     }

@@ -25,8 +25,8 @@ $factory->define(ElectricalBlog\User::class, function (Faker $faker) {
 
 $factory->define(ElectricalBlog\Post::class, function (Faker $faker) {
     return [
-        'user_id' => function (){
-        	return factory('ElectricalBlog\User')->create()->id;
+        'user_id' => function () {
+            return factory('ElectricalBlog\User')->create()->id;
         },
         'title' => $faker->sentence,
         'body' => $faker->realText($maxNbChars = 10000, $indexSize = 2),
@@ -35,11 +35,11 @@ $factory->define(ElectricalBlog\Post::class, function (Faker $faker) {
 
 $factory->define(ElectricalBlog\Issue::class, function (Faker $faker) {
     return [
-    	'post_id' => function (){
-        	return factory('ElectricalBlog\Post')->create()->id;
+        'post_id' => function () {
+            return factory('ElectricalBlog\Post')->create()->id;
         },
-        'user_id' => function (){
-        	return factory('ElectricalBlog\User')->create()->id;
+        'user_id' => function () {
+            return factory('ElectricalBlog\User')->create()->id;
         },
 
         'title' => $faker->sentence,
@@ -50,12 +50,18 @@ $factory->define(ElectricalBlog\Issue::class, function (Faker $faker) {
 
 $factory->define(ElectricalBlog\Reply::class, function (Faker $faker) {
     return [
-    	'issue_id' => function (){
-        	return factory('ElectricalBlog\Issue')->create()->id;
+        'issue_id' => function () {
+            return factory('ElectricalBlog\Issue')->create()->id;
         },
-        'user_id' => function (){
-        	return factory('ElectricalBlog\User')->create()->id;
+        'user_id' => function () {
+            return factory('ElectricalBlog\User')->create()->id;
         },
         'body' => $faker->realText($maxNbChars = 1000, $indexSize = 2),
+    ];
+});
+
+$factory->define(ElectricalBlog\Category::class, function (Faker $faker) {
+    return [
+        'name' => $faker->name,
     ];
 });

@@ -18,6 +18,8 @@ class CreateRepliesTable extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('issue_id');
             $table->text('body');
+            $table->integer('solved_points')->default(0);
+            $table->integer('unsolved_points')->default(0);
             $table->timestamps();
         });
     }

@@ -7,6 +7,7 @@ import Form from './utilities/Form';
 window.Vue = Vue;
 window.axios = axios;
 window.Form = Form;
+window.events = new Vue();
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 

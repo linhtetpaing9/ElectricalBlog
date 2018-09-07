@@ -1,8 +1,8 @@
 import './bootstrap';
 
-
-Vue.component('posts-searching', require('./components/PostSearchingComponent.vue'));
-Vue.component('issues-display', require('./components/IssueDisplayComponent.vue'));
+Vue.component('postSearchingComponent', require('./components/PostSearchingComponent.vue'));
+Vue.component('postShowComponent', require('./components/PostShowComponent.vue'));
+Vue.component('postCategoryComponent', require('./components/PostCategoryComponent.vue'));
 
 new Vue({
     el: '#app'

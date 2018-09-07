@@ -70,7 +70,7 @@
 "use strict";
 
 
-var bind = __webpack_require__(4);
+var bind = __webpack_require__(5);
 var isBuffer = __webpack_require__(18);
 
 /*global toString:true*/
@@ -424,10 +424,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(5);
+    adapter = __webpack_require__(6);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(5);
+    adapter = __webpack_require__(6);
   }
   return adapter;
 }
@@ -502,10 +502,119 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports) {
+
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file.
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier /* server only */
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = injectStyles
+  }
+
+  if (hook) {
+    var functional = options.functional
+    var existing = functional
+      ? options.render
+      : options.beforeCreate
+
+    if (!functional) {
+      // inject component registration as beforeCreate hook
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    } else {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return existing(h, context)
+      }
+    }
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -695,7 +804,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -713,7 +822,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -724,7 +833,7 @@ var settle = __webpack_require__(21);
 var buildURL = __webpack_require__(23);
 var parseHeaders = __webpack_require__(24);
 var isURLSameOrigin = __webpack_require__(25);
-var createError = __webpack_require__(6);
+var createError = __webpack_require__(7);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(26);
 
 module.exports = function xhrAdapter(config) {
@@ -900,7 +1009,7 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -925,7 +1034,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -937,7 +1046,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -963,115 +1072,6 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file.
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier /* server only */
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = injectStyles
-  }
-
-  if (hook) {
-    var functional = options.functional
-    var existing = functional
-      ? options.render
-      : options.beforeCreate
-
-    if (!functional) {
-      // inject component registration as beforeCreate hook
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    } else {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return existing(h, context)
-      }
-    }
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1087,8 +1087,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap__ = __webpack_require__(12);
 
 
-Vue.component('posts-searching', __webpack_require__(37));
-Vue.component('issues-display', __webpack_require__(40));
+Vue.component('postSearchingComponent', __webpack_require__(37));
+Vue.component('postShowComponent', __webpack_require__(40));
+Vue.component('postCategoryComponent', __webpack_require__(43));
 
 new Vue({
     el: '#app'
@@ -1112,6 +1113,7 @@ new Vue({
 window.Vue = __WEBPACK_IMPORTED_MODULE_0_vue___default.a;
 window.axios = __WEBPACK_IMPORTED_MODULE_1_axios___default.a;
 window.Form = __WEBPACK_IMPORTED_MODULE_2__utilities_Form__["a" /* default */];
+window.events = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -12350,7 +12352,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(4)))
 
 /***/ }),
 /* 16 */
@@ -12366,7 +12368,7 @@ module.exports = __webpack_require__(17);
 
 
 var utils = __webpack_require__(0);
-var bind = __webpack_require__(4);
+var bind = __webpack_require__(5);
 var Axios = __webpack_require__(19);
 var defaults = __webpack_require__(2);
 
@@ -12401,9 +12403,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(8);
+axios.Cancel = __webpack_require__(9);
 axios.CancelToken = __webpack_require__(33);
-axios.isCancel = __webpack_require__(7);
+axios.isCancel = __webpack_require__(8);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -12556,7 +12558,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(6);
+var createError = __webpack_require__(7);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -12989,7 +12991,7 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(0);
 var transformData = __webpack_require__(30);
-var isCancel = __webpack_require__(7);
+var isCancel = __webpack_require__(8);
 var defaults = __webpack_require__(2);
 var isAbsoluteURL = __webpack_require__(31);
 var combineURLs = __webpack_require__(32);
@@ -13149,7 +13151,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(8);
+var Cancel = __webpack_require__(9);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -13502,7 +13504,7 @@ var Errors = function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(9)
+var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(38)
 /* template */
@@ -13573,10 +13575,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'posts-searching',
+
   props: {
     myProp: String
   },
@@ -13584,18 +13590,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       search: '',
       posts: [],
-      url: '/posts/'
+      category_id: '',
+      postUrl: '/posts/',
+      categoryUrl: '/categories/'
     };
   },
   created: function created() {
     var _this = this;
 
-    axios.get('/api/posts').then(function (response) {
+    axios.get('/categories/posts').then(function (response) {
       return _this.posts = response.data;
     }).then(function (response) {
-      return console.log(response);
+      return window.events.$emit('allPostCount', _this.posts.length);
     }).catch(function (error) {
       return console.log(error);
+    });
+
+    window.events.$on('setCategory', function (category_id) {
+      _this.category_id = category_id;
+      console.log('setCategory event caught', _this.category_id);
+      axios.get('/categories/' + _this.category_id + '/posts').then(function (response) {
+        return _this.posts = response.data;
+      }).catch(function (error) {
+        return console.log(error);
+      });
+    });
+
+    window.events.$on('unsetCategory', function () {
+      console.log('unsetCategory event caught');
+      axios.get('/categories/posts').then(function (response) {
+        return _this.posts = response.data;
+      }).catch(function (error) {
+        return console.log(error);
+      });
     });
   },
 
@@ -13648,24 +13675,47 @@ var render = function() {
       ]),
       _vm._v(" "),
       _vm._l(_vm.filteredPosts, function(post) {
-        return _c("div", { key: post.id, staticClass: "post-preview" }, [
-          _c("a", { attrs: { href: _vm.url + post.id } }, [
-            _c("h2", { staticClass: "post-title" }, [
-              _vm._v(" " + _vm._s(post.title) + " ")
+        return _c(
+          "div",
+          { staticClass: "post-preview" },
+          [
+            _c("a", { attrs: { href: _vm.postUrl + post.id } }, [
+              _c("h2", { staticClass: "post-title" }, [
+                _vm._v(" " + _vm._s(post.title) + " ")
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "text-success" }, [
+                _vm._v("continue reading")
+              ])
             ]),
             _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "text-success",
-                attrs: { href: _vm.url + post.id }
-              },
-              [_vm._v("continue reading")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("p", { staticClass: "post-meta" })
-        ])
+            _c("br"),
+            _vm._v(" "),
+            _vm._l(post.categories, function(categories) {
+              return _c(
+                "span",
+                {
+                  staticClass: "badge badge-danger",
+                  staticStyle: { "margin-left": "5px" }
+                },
+                [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "text-white",
+                      staticStyle: { "text-decoration": "none" },
+                      attrs: { href: "javascript:void(0)" }
+                    },
+                    [_vm._v(_vm._s(categories.name))]
+                  )
+                ]
+              )
+            }),
+            _vm._v(" "),
+            _c("p", { staticClass: "post-meta" })
+          ],
+          2
+        )
       }),
       _vm._v(" "),
       _c("hr"),
@@ -13713,7 +13763,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(9)
+var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(41)
 /* template */
@@ -13734,7 +13784,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/script/components/IssueDisplayComponent.vue"
+Component.options.__file = "resources/assets/script/components/PostShowComponent.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -13743,9 +13793,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6457516b", Component.options)
+    hotAPI.createRecord("data-v-2b11e357", Component.options)
   } else {
-    hotAPI.reload("data-v-6457516b", Component.options)
+    hotAPI.reload("data-v-2b11e357", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -13834,49 +13884,65 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'issues-display',
-    data: function data() {
-        return {
-            form: new Form({
-                title: '',
-                body: ''
-            }),
-            post: [],
-            post_id: window.location.href.split('posts/').pop(),
-            displayNone: true,
-            display: false
+  data: function data() {
+    return {
+      form: new Form({
+        title: '',
+        body: ''
+      }),
+      post: [],
+      post_id: window.location.href.split('posts/').pop(),
+      displayNone: true,
+      display: false,
+      recommendSign: 'btn btn-secondary',
+      recommendText: 'Recommend'
 
-        };
+    };
+  },
+  created: function created() {
+    this.getIssue();
+  },
+
+
+  methods: {
+    getIssue: function getIssue() {
+      var _this = this;
+
+      axios.get('/api/posts/' + this.post_id + '/issues').then(function (response) {
+        return _this.post = response.data;
+      }).then(function (response) {
+        return console.log(response);
+      }).catch(function (error) {
+        return console.log(error);
+      });
+      console.log(this.post_id);
     },
-    created: function created() {
-        this.getIssue();
+    onSubmit: function onSubmit() {
+      var _this2 = this;
+
+      this.form.post('/posts/' + this.post_id + '/issues').then(function (response) {
+        return _this2.getIssue();
+      });
     },
-
-
-    methods: {
-        getIssue: function getIssue() {
-            var _this = this;
-
-            axios.get('/api/posts/' + this.post_id + '/issues').then(function (response) {
-                return _this.post = response.data;
-            }).then(function (response) {
-                return console.log(response);
-            }).catch(function (error) {
-                return console.log(error);
-            });
-            console.log(this.post_id);
-        },
-        onSubmit: function onSubmit() {
-            var _this2 = this;
-
-            this.form.post('/posts/' + this.post_id + '/issues').then(function (response) {
-                return _this2.getIssue();
-            });
-        }
+    recommendOption: function recommendOption() {
+      if (this.recommendSign == 'btn btn-secondary') {
+        this.recommendSign = 'btn btn-success';
+        this.recommendText = 'Recommended';
+      } else {
+        this.recommendSign = 'btn btn-secondary';
+        this.recommendText = 'Recommend';
+      }
     }
+  }
 
 });
 
@@ -13894,6 +13960,25 @@ var render = function() {
       _c("h2", { staticClass: "section-heading" }, [
         _vm._v(_vm._s(_vm.post.title))
       ]),
+      _vm._v(" "),
+      _vm._l(_vm.post.categories, function(category) {
+        return _c("span", {
+          key: category.id + "-label",
+          staticClass: "badge bg-info",
+          staticStyle: { "margin-left": "10px" },
+          domProps: { textContent: _vm._s(category.name) }
+        })
+      }),
+      _vm._v(" "),
+      _c("p", { staticClass: "text-danger" }, [
+        _vm._v(" " + _vm._s(_vm.post.recommend_point) + " recommended ")
+      ]),
+      _vm._v(" "),
+      _c("button", {
+        class: _vm.recommendSign,
+        domProps: { textContent: _vm._s(_vm.recommendText) },
+        on: { click: _vm.recommendOption }
+      }),
       _vm._v(" "),
       _c("div", { domProps: { innerHTML: _vm._s(_vm.post.body) } }),
       _vm._v(" "),
@@ -14119,7 +14204,194 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-6457516b", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-2b11e357", module.exports)
+  }
+}
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(44)
+/* template */
+var __vue_template__ = __webpack_require__(45)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/script/components/PostCategoryComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0e6e5914", Component.options)
+  } else {
+    hotAPI.reload("data-v-0e6e5914", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 44 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    myProp: String
+  },
+  data: function data() {
+    return {
+      categories: [],
+      posts_count: 0,
+      categoryUrl: '/categories/',
+      postUrl: '/posts/'
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get('/api/categories').then(function (response) {
+      return _this.categories = response.data;
+    }).then(function (response) {
+      return console.log(response);
+    }).catch(function (error) {
+      return console.log(error);
+    });
+
+    window.events.$on('allPostCount', function (posts_count) {
+      console.log(posts_count + ' posts');
+      _this.posts_count = posts_count;
+    });
+  },
+
+  methods: {
+    setCategoryId: function setCategoryId(category_id) {
+      window.events.$emit('setCategory', category_id);
+    },
+    unsetCategoryId: function unsetCategoryId() {
+      window.events.$emit('unsetCategory');
+    }
+  }
+});
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "card", staticStyle: { width: "18rem" } }, [
+    _c(
+      "ul",
+      { staticClass: "list-group list-group-flush" },
+      [
+        _c("li", { staticClass: "list-group-item" }, [
+          _c(
+            "a",
+            {
+              staticStyle: { "text-decoration": "none" },
+              attrs: { href: "javascript:void(0)" },
+              on: {
+                click: function($event) {
+                  _vm.unsetCategoryId()
+                }
+              }
+            },
+            [_vm._v("\n        All\n      ")]
+          ),
+          _vm._v(" "),
+          _c("span", {
+            staticClass: "badge badge-pill badge-danger",
+            domProps: { textContent: _vm._s(this.posts_count) }
+          })
+        ]),
+        _vm._v(" "),
+        _vm._l(this.categories, function(category) {
+          return _c(
+            "li",
+            { key: category.id, staticClass: "list-group-item" },
+            [
+              _c(
+                "a",
+                {
+                  staticStyle: { "text-decoration": "none" },
+                  attrs: { href: "javascript:void(0)" },
+                  on: {
+                    click: function($event) {
+                      _vm.setCategoryId(category.id)
+                    }
+                  }
+                },
+                [_vm._v("\n      " + _vm._s(category.name) + "\n      ")]
+              ),
+              _vm._v(" "),
+              _c("span", {
+                staticClass: "badge badge-pill badge-danger",
+                domProps: { textContent: _vm._s(category.posts_count) }
+              })
+            ]
+          )
+        })
+      ],
+      2
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0e6e5914", module.exports)
   }
 }
 

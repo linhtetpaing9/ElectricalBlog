@@ -1,4 +1,3 @@
- <script src="{{ asset('js/master.js') }}" defer></script>
-
+ <script src="{{ asset('js/main-page.js') }}"></script>
 
  @yield('script')

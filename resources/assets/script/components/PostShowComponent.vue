@@ -1,7 +1,13 @@
 <template>
   <div>
       <h2 class="section-heading">{{ post.title }}</h2>
+      
+      
+      <span class="badge bg-info" v-for="category in post.categories" :key="category.id + '-label'" v-text="category.name" style="margin-left: 10px"></span>
+      <p class="text-danger"> {{ post.recommend_point}} recommended </p>
+      <button @click="recommendOption" :class="recommendSign" v-text="recommendText"></button>
       <div v-html="post.body"></div>
+
       <br>
       <hr>
       <br>
@@ -74,7 +80,6 @@
 <script>
 
   export default {
-    name: 'issues-display',
     data(){
         return {
           form: new Form({
@@ -85,6 +90,8 @@
           post_id: window.location.href.split('posts/').pop(),
           displayNone: true,
           display: false,
+          recommendSign: 'btn btn-secondary',
+          recommendText: 'Recommend',
 
         }
     },
@@ -98,13 +105,23 @@
               .then( (response) => this.post = response.data  )
               .then( (response) => console.log(response) )
               .catch( (error) => console.log(error) );
-        console.log(this.post_id);
+          console.log(this.post_id);
         },
         onSubmit() {
             this.form.post( '/posts/' + this.post_id + '/issues' )
                     .then( response => this.getIssue() );    
+        },
+        recommendOption() {
+          if(this.recommendSign == 'btn btn-secondary'){
+            this.recommendSign = 'btn btn-success';
+            this.recommendText = 'Recommended';
+          }else{
+            this.recommendSign = 'btn btn-secondary';
+            this.recommendText = 'Recommend';
+          }
         }
     }
 
   }
 </script>
+

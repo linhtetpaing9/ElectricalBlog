@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.main-page')
 
 @section('css')
 
@@ -22,10 +22,12 @@
 @endsection
 
 @section('content')
-
-<div class="col-lg-8 col-md-10 mx-auto">
-  <div id="app">
-      <posts-searching></posts-searching>
+<div id="app" class="row">
+  <div class="col-lg-8 col-md-10">
+      <post-searching-component></post-searching-component>
+  </div>
+  <div class="col-lg-4 col-md-2">
+      <post-category-component></post-category-component>
   </div>
 </div>
 
@@ -34,4 +36,5 @@
 
 @section('script')
  <script src="{{ asset('js/app.js') }}" defer></script>
+
 @endsection

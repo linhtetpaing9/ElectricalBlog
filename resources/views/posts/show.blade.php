@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.main-page')
 
 @section('css')
 
@@ -135,7 +135,7 @@
 @endsection
 
 @section('content')
-         
+
 <div class="col-lg-8 col-md-10 mx-auto">
   <article>
     <div class="row">
@@ -147,7 +147,7 @@
       </form>
     </div>
       <div id="app">
-          <issues-display></issues-display>
+          <post-show-component></post-show-component>
       </div>
 
   </article>

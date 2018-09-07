@@ -24,7 +24,8 @@
         ],
         "psr-4": {
             "ElectricalBlog\\": "app/"
-        }
+        },
+        "files": ["app/Helper/helper.php"]
     },
     "autoload-dev": {
         "psr-4": {

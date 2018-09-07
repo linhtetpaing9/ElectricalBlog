@@ -1,7 +1,9 @@
-@extends('layouts.master')
+@extends('layouts.main-page')
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/bootstrap-wysihtml5.css')}}">
+<link rel="stylesheet" href="{{asset('css/select2.min.css')}}">
+<link rel="stylesheet" href="{{asset('css/select2-bootstrap.min.css')}}">
 @endsection
 
 @section('header')
@@ -34,6 +36,18 @@
           <input type="text" class="form-control" placeholder="Title Here" name="title" value="{{$post->title}}">
         </div>
         <div class="form-group">
+          <label for="categories">Categories</label>
+          <select name="categories[]" class="form-control myclass" multiple="multiple">
+            @foreach($categories as $key=>$value)
+                @if(array_key_exists($key, $existPostCategoryId))
+                  <option value="{{$key}}" selected>{{$value}}</option>
+                @else
+                  <option value="{{$key}}">{{$value}}</option>
+                @endif
+            @endforeach
+          </select>
+        </div>
+        <div class="form-group">
           <textarea id="mymce" name="body" >{{$post->body}}</textarea>
           {{-- <input type="text" name="body" style="display: none"> --}}
         </div>
@@ -50,8 +64,8 @@
 
 
 @section('script')
-  <script src="{{ asset('js/jquery.min.js') }}"></script>
   <script src="{{ asset('js/tinymce/jquery.tinymce.min.js') }}"></script>
+  <script src="{{asset('js/select2.min.js')}}"></script>
   <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
  <script src="{{ asset('js/app.js') }}" defer></script>
  <script>
@@ -100,15 +114,10 @@
 
             });
         }
-        // $("#form-data").submit(function(e){
+        $('.myclass').select2({
+          tags: true
+        });
 
-        //   var content = tinymce.get("texteditor").getContent();
-
-        //   $("#data-container").html(content);
-
-        //   return false;
-
-        // });
     });
  </script>
 @endsection

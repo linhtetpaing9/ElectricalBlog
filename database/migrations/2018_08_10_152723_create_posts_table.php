@@ -18,6 +18,8 @@ class CreatePostsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->string('title');
             $table->text('body');
+            $table->integer('recommend_point')->default(0);
+            $table->integer('unrecommend_point')->default(0);
             $table->timestamps();
         });
     }
