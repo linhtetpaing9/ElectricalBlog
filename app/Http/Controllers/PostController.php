@@ -30,13 +30,6 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
-        $existPostCategoryId = [];
-        foreach ($post->categories as $category) {
-            $existPostCategoryId[$category->id] = $category->name;
-        }
-        $categories = Category::pluck('name', 'id');
-
-        return view('posts.edit', compact('post', 'categories', 'existPostCategoryId'));
     }
 
     public function store(PostRequest $request)
@@ -60,7 +53,7 @@ class PostController extends Controller
         ]);
         $post->categories()->sync($request->categories);
 
-        return Redirect::route('posts.show', $post->id);
+        return Redirect::route('admin.posts.index');
     }
 
     public function destroy(Post $post)

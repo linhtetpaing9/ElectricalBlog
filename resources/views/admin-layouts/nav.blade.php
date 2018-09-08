@@ -6,7 +6,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">SB Admin v2.0</a>
+                <a class="navbar-brand" href="index.html">Eletrical Blog v1.0 beta</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -243,8 +243,14 @@
                                 <li>
                                     <a href="{{route('admin.posts.create')}}">Create</a>
                                 </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Issues<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="javascript:void(0)">Grid</a>
+                                <a href="{{route('admin.issues.index')}}">All Issues</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->

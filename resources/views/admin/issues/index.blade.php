@@ -6,7 +6,7 @@
     <div class="col-lg-12">
       <div class="panel panel-default">
         <div class="panel-heading">
-            DataTables Advanced Tables
+            DataTables Issue Tables
         </div>
         <div class="panel-body">
         <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -15,9 +15,8 @@
                       <th>Title</th>
                       <th>Body</th>
                       <th>User</th>
+                      <th>Post</th>
                       <th>Create at</th>
-                      <th></th>
-                      <th></th>
                   </tr>
               </thead>
               <tbody>
@@ -42,14 +41,13 @@
             responsive: true,
             processing: true,
             serverSide: true,
-            ajax: '{!! route('api.posts.datatable') !!}',
+            ajax: '{!! route('api.issues.datatable') !!}',
             columns: [
             { data: 'title', name: 'title' }, 
             { data: 'body', name: 'body' }, 
             { data: 'user', name: 'user' }, 
+            { data: 'post', name: 'post' }, 
             { data: 'created_at', name: 'created_at' }, 
-            { data: 'edit', name: 'edit' }, 
-            { data: 'destroy', name: 'destroy' }, 
             ]
         });
     });

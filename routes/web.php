@@ -34,5 +34,16 @@ Route::get('/admin', function () {
 
 Route::prefix('admin')->group(function () {
     Route::get('/posts/create', 'AdminPostController@create')->name('admin.posts.create');
+    Route::get('/posts/{post}/edit', 'AdminPostController@edit')->name('admin.posts.edit');
     Route::get('/posts', 'AdminPostController@index')->name('admin.posts.index');
+    
+    Route::get('/issues', 'AdminIssueController@index')->name('admin.issues.index');
+});
+
+
+Route::prefix('api')->group(function () {
+    Route::get('/posts/datatable', 'ApiController@postDatatable')
+    ->name('api.posts.datatable');
+    Route::get('/issues/datatable', 'ApiController@IssueDatatable')
+    ->name('api.issues.datatable');
 });
