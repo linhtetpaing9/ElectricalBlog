@@ -11,18 +11,14 @@
 |
 */
 
-Route::get('/', 'PageController@index')->name('posts.index');
+Route::get('/', 'PageController@index');
 
+Route::get('/posts/{post}', 'PostController@show')->name('posts.show');
+Route::resource('/books', 'BookController');
 
-Route::post('/posts/{post}/issues', 'IssueController@store');
-Route::get('/posts/{post}/issues/create', 'IssueController@create')->name('posts.issues.create');
-
-Route::resource('/posts', 'PostController');
 Route::get('/categories/posts', 'PostCategoryController@index');
 Route::get('/categories/{category}/posts', 'PostCategoryController@show');
 
-Route::get('/api/categories', 'ApiController@countCategoriesByPosts');
-Route::get('/api/posts/{post}/issues', 'ApiController@apiIndexIssue');
 
 
 Auth::routes();
@@ -33,17 +29,57 @@ Route::get('/admin', function () {
 });
 
 Route::prefix('admin')->group(function () {
-    Route::get('/posts/create', 'AdminPostController@create')->name('admin.posts.create');
-    Route::get('/posts/{post}/edit', 'AdminPostController@edit')->name('admin.posts.edit');
-    Route::get('/posts', 'AdminPostController@index')->name('admin.posts.index');
-    
-    Route::get('/issues', 'AdminIssueController@index')->name('admin.issues.index');
+    Route::get('posts/trash', 'PostController@trash')->name('posts.trash');
+
+    Route::post(
+        'posts/{trashed_post}/restore',
+        'PostController@restore'
+    )->name('posts.restore');
+
+    Route::post(
+        'posts/{trashed_post}/forceDelete',
+        'PostController@forceDelete'
+    )->name('posts.forceDelete');
+
+    Route::resource('/posts', 'PostController')->except(['show', 'edit']);
+    Route::get('/posts/{post}', 'PostController@edit')->name('posts.edit');
+
+    Route::get('issues/trash', 'IssueController@trash')->name('issues.trash');
+
+    Route::post(
+        'issues/{trashed_issue}/restore',
+        'IssueController@restore'
+    )->name('issues.restore');
+
+    Route::post(
+        'issues/{trashed_issue}/forceDelete',
+        'IssueController@forceDelete'
+    )->name('issues.forceDelete');
+
+    Route::get('/issues', 'IssueController@index')->name('issues.index');
+    Route::delete('/issues/{issue}', 'IssueController@destroy')->name('issues.destroy');
+    Route::post('/posts/{post}/issues', 'IssueController@store')->name('issues.store');
+
+    Route::resource('/categories', 'CategoryController');
 });
 
 
 Route::prefix('api')->group(function () {
     Route::get('/posts/datatable', 'ApiController@postDatatable')
     ->name('api.posts.datatable');
+    Route::get('/posts/trash/datatable', 'ApiController@postTrashDatatable')
+    ->name('api.posts.trash.datatable');
     Route::get('/issues/datatable', 'ApiController@IssueDatatable')
     ->name('api.issues.datatable');
+    Route::get('/issues/trash/datatable', 'ApiController@IssueTrashDatatable')
+    ->name('api.issues.trash.datatable');
+
+    Route::get('/categories', 'ApiController@countCategoriesByPosts');
+    Route::get('/posts/{post}/issues', 'ApiController@apiIndexIssue');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+\TalvBansal\MediaManager\Routes\MediaRoutes::get();

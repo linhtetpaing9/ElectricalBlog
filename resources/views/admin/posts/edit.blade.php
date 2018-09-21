@@ -7,15 +7,25 @@
 @endsection
 
 @section('content')
+
+<br>
 <div class="row">
   <div class="col-lg-12" id="app">
-    <h4 class="card-title">Post Create</h4>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+          Post Edit
+        </div>
+        <div class="panel-body">
       <form action="{{route('posts.update', $post->id)}}" id="form-data" method="POST">
         @method('PATCH')
         @csrf
         <div class="form-group">
           <label for="title">Title</label>
-          <input type="text" class="form-control" placeholder="Title Here" name="title" value="{{$post->title}}">
+          <input type="text" class="form-control" name="title" value="{{$post->title}}">
+        </div>
+        <div class="form-group">
+          <label for="title">Estimate Reading Time</label>
+          <input type="text" class="form-control" name="readable_time" value="{{$post->readable_time}}">
         </div>
         <div class="form-group">
           <label for="categories">Categories</label>
@@ -30,13 +40,14 @@
           </select>
         </div>
         <div class="form-group">
-          <textarea id="mymce" name="body" >{{$post->body}}</textarea>
-          {{-- <input type="text" name="body" style="display: none"> --}}
+          <textarea id="mymce" name="body">{{$post->body}}</textarea>
         </div>
           <div class="form-group">
             <button type="submit" class="btn btn-info">Submit</button>
           </div>
       </form>
+        </div>
+    </div>
   </div>
 </div>
 
@@ -96,9 +107,7 @@
 
             });
         }
-        $('.myclass').select2({
-          tags: true
-        });
+        $('.myclass').select2();
 
     });
  </script>

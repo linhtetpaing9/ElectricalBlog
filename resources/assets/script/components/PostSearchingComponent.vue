@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import EventBus from './event-bus.js' 
 
   export default {
 
@@ -44,10 +45,10 @@
     created(){
         axios.get('/categories/posts')
               .then( (response) => this.posts = response.data  )
-              .then( (response) => window.events.$emit('allPostCount', this.posts.length) )
+              .then( (response) => EventBus.$emit('allPostCount', this.posts.length) )
               .catch( (error) => console.log(error) );
 
-        window.events.$on('setCategory', (category_id) => {
+        EventBus.$on('setCategory', (category_id) => {
           this.category_id = category_id;  
           console.log('setCategory event caught', this.category_id);
           axios.get('/categories/'+ this.category_id +'/posts')
@@ -55,7 +56,7 @@
               .catch( (error) => console.log(error) );
         });
 
-        window.events.$on('unsetCategory', () => {
+        EventBus.$on('unsetCategory', () => {
           console.log('unsetCategory event caught');
           axios.get('/categories/posts')
               .then( (response) => this.posts = response.data  )

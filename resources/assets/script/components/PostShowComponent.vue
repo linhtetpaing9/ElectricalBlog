@@ -48,7 +48,7 @@
       <div class="container">
         <form @submit.prevent="onSubmit" 
         @keydown="form.errors.clear($event.target.name)">
-        
+           
           <div class="form-group row">
             <h2 class="text-secondary">Do You Have Any Question ?</h2>
           </div>
@@ -108,7 +108,7 @@
           console.log(this.post_id);
         },
         onSubmit() {
-            this.form.post( '/posts/' + this.post_id + '/issues' )
+            this.form.post( '/admin/posts/' + this.post_id + '/issues' )
                     .then( response => this.getIssue() );    
         },
         recommendOption() {

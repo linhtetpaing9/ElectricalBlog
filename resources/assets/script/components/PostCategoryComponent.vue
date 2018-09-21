@@ -18,6 +18,7 @@
 </template>
 
 <script>
+  import EventBus from './event-bus.js' 
 	export default{
     props: {
       myProp: String
@@ -36,17 +37,17 @@
               .then( (response) => console.log(response) )
               .catch( (error) => console.log(error) );
 
-        window.events.$on('allPostCount', (posts_count) => {
+        EventBus.$on('allPostCount', (posts_count) => {
           console.log(posts_count + ' posts');
           this.posts_count = posts_count;
         });
     },
     methods:{
         setCategoryId(category_id){
-            window.events.$emit('setCategory', category_id);
+            EventBus.$emit('setCategory', category_id);
         },
         unsetCategoryId(){
-            window.events.$emit('unsetCategory');
+            EventBus.$emit('unsetCategory');
         }
     }
 	}

@@ -238,10 +238,19 @@
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Posts<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                <a href="{{route('admin.posts.index')}}">All Posts</a>
+                                <a href="{{route('posts.index')}}">All Posts</a>
                                 </li>
                                 <li>
-                                    <a href="{{route('admin.posts.create')}}">Create</a>
+                                    <a href="{{route('posts.create')}}">Create</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Categories<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                <a href="{{route('categories.index')}}">All Categories</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -250,7 +259,19 @@
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Issues<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                <a href="{{route('admin.issues.index')}}">All Issues</a>
+                                <a href="{{route('issues.index')}}">All Issues</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-trash fa-fw"></i> Bin<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                <a href="{{route('posts.trash')}}">Post Trash</a>
+                                </li>
+                                <li>
+                                <a href="{{route('issues.trash')}}">Issue Trash</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->

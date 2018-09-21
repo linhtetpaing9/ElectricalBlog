@@ -29,6 +29,7 @@ $factory->define(ElectricalBlog\Post::class, function (Faker $faker) {
             return factory('ElectricalBlog\User')->create()->id;
         },
         'title' => $faker->sentence,
+        'readable_time' => $faker->randomDigitNotNull . ' minutes',
         'body' => $faker->realText($maxNbChars = 10000, $indexSize = 2),
     ];
 });
@@ -63,5 +64,6 @@ $factory->define(ElectricalBlog\Reply::class, function (Faker $faker) {
 $factory->define(ElectricalBlog\Category::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
+        'description' => $faker->sentence,
     ];
 });

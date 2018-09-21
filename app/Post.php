@@ -2,10 +2,14 @@
 
 namespace ElectricalBlog;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Yajra\Datatables\Datatables;
 
 class Post extends Model
 {
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
+
     public function user()
     {
         return $this->belongsTo(User::class)->withDefault();
@@ -29,37 +33,62 @@ class Post extends Model
 
     public function scopeGetDatatableQuery($query, $request)
     {
-        // if ($request->ajax()) {
-            return Datatables::of($query)
-            ->editColumn('title', '<a href="{{route("posts.show", $id)}}"><p class="text-success"> {{ $title }} </p>')
-            ->editColumn('body', '{{ str_limit(($body), 100, "...") }}')
-            ->addColumn("user", function ($query) {
-                $data = '<p class="text-info">' . $query->user->name .'</p>';
-                return $data;
-            })
-            ->addColumn("created_at", function ($query) {
-                $data = '<span class="badge badge-info">' . $query->created_at->diffForHumans() .'</span>';
-                return $data;
-            })
-            ->addColumn("edit", function ($query) {
-                $data = '<a href='. "#" .' class="text-info"><span class="fa fa-edit"></span></a>';
-                return $data;
-            })
-            ->addColumn("destroy", function ($query) {
-                $data = '<a href='. "#" .' class="text-danger"><span class="fa fa-trash"></span></a>';
-                return $data;
-            })
+        return Datatables::of($query)
+        ->editColumn('title', '<a href="{{route("posts.show", $id)}}"><p class="text-success"> {{ $title }} </p>')
+        ->addColumn("user", function ($query) {
+            $data = '<p class="text-info">' . $query->user->name .'</p>';
+            return $data;
+        })
+        ->addColumn("created_at", function ($query) {
+            $data = '<span class="badge progress-bar-success">' . $query->created_at->diffForHumans() .'</span>';
+            return $data;
+        })
+        ->addColumn("readable_time", function ($query) {
+            $data = '<span class="badge progress-bar-danger">' . $query->readable_time .'</span>';
+            return $data;
+        })
+        ->addColumn("edit", function ($query) {
+            $data = '<a href='. route("posts.edit", $query->id) .' class="btn btn-info text-info"><span class="fa fa-edit"></span></a>';
+            return $data;
+        })
+        ->addColumn("delete", function ($query) {
+            $data = '<form action="' . route('posts.destroy', $query->id). '" method="post">'
+            . csrf_field() .
+            method_field("delete") .
+            '<button class="btn btn-danger"><span class="fa fa-trash"></span></a></button>
+        </form>';
+            return $data;
+        })
+        ->rawColumns(['title', 'user', 'created_at', 'edit', 'delete', 'readable_time' ])
+        ->toJson();
+    }
+    public function scopeGetTrashDatatableQuery($query, $request)
+    {
+        return Datatables::of($query)
+        ->addColumn("user", function ($query) {
+            $data = '<p class="text-info">' . $query->user->name .'</p>';
+            return $data;
+        })
+        ->addColumn("restore", function ($query) {
+            $data = '<form action="' . route('posts.restore', $query->id). '" method="POST">'
+            . csrf_field() .
+            '<button class="btn btn-success"><span class="fa fa-undo"></span></a></button>
+        </form>';
+            return $data;
+        })
+        ->addColumn("created_at", function ($query) {
+            $data = '<span class="badge badge-info">' . $query->created_at->diffForHumans() .'</span>';
+            return $data;
+        })
+        ->addColumn("forceDelete", function ($query) {
+            $data = '<form action="' . route('posts.forceDelete', $query->id). '" method="POST">'
+            . csrf_field() .
+            '<button class="btn btn-danger" onclick="deleteFunction()"><span class="fa fa-trash"></span></a></button>
+        </form>';
+            return $data;
+        })
 
-            // ->addColumn("delete", function ($query) {
-            //     $data = '<form action="' . route('students.destroy', $query->student_number). '" method="post">'
-            //     . csrf_field() .
-            //     method_field("delete") .
-            //     '<button class="btn btn-danger">Delete</button>
-            // </form>';
-            //     return $data;
-            // })
-            ->rawColumns([ 'body', 'title', 'user', 'created_at', 'edit', 'destroy' ])
-            ->toJson();
-    // }
+        ->rawColumns([ 'restore','user', 'created_at', 'forceDelete' ])
+        ->toJson();
     }
 }

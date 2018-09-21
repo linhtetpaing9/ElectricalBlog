@@ -30,6 +30,16 @@ class ApiController extends Controller
         return Post::getDatatableQuery($request);
     }
 
+    public function postTrashDatatable(Request $request)
+    {
+        return Post::onlyTrashed()->getTrashDatatableQuery($request);
+    }
+
+    public function IssueTrashDatatable(Request $request)
+    {
+        return Issue::onlyTrashed()->getTrashDatatableQuery($request);
+    }
+
     public function issueDatatable(Request $request)
     {
         return Issue::getDatatableQuery($request);

@@ -12,7 +12,7 @@
           <a class="nav-link" href="/"> Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/posts"> Posts</a>
+          <a class="nav-link" href="{{route('posts.index')}}"> Posts</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Electrical Jobs</a>
