@@ -11,6 +11,7 @@
 
 		<div class="form-group">
 			<div class="input-group">
+
 				<input type="text" class="form-control" name="page_image" id="page_image" alt="Image thumbnail" placeholder="Page Image" v-model="pageImage">
 				<span class="input-group-btn">
                 <button type="button" class="btn btn-default" @click="showMediaManager = true">Select Image</button>

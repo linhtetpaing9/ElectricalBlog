@@ -20009,6 +20009,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -20023,19 +20025,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       posts: [],
       category_id: '',
       postUrl: '/posts/',
-      categoryUrl: '/categories/'
+      categoryUrl: '/categories/',
+      paginate: {},
+      jsonUrl: '/api/categories/posts',
+      firstPage: '',
+      currentPage: '',
+      total: '',
+      perPage: ''
     };
   },
   created: function created() {
     var _this = this;
 
-    axios.get('/categories/posts').then(function (response) {
-      return _this.posts = response.data;
-    }).then(function (response) {
-      return __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* default */].$emit('allPostCount', _this.posts.length);
-    }).catch(function (error) {
-      return console.log(error);
-    });
+    this.getJson();
 
     __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* default */].$on('setCategory', function (category_id) {
       _this.category_id = category_id;
@@ -20049,21 +20051,68 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* default */].$on('unsetCategory', function () {
       console.log('unsetCategory event caught');
-      axios.get('/categories/posts').then(function (response) {
-        return _this.posts = response.data;
+      axios.get(_this.jsonUrl).then(function (response) {
+        return _this.paginate = response.data;
+      }).then(function (response) {
+        return _this.posts = _this.paginate.data;
       }).catch(function (error) {
         return console.log(error);
       });
     });
   },
 
-  computed: {
-    filteredPosts: function filteredPosts() {
+  methods: {
+    nextPaginate: function nextPaginate() {
+      this.jsonUrl = this.paginate.next_page_url;
+      this.getJson();
+      // console.log(this.jsonUrl);
+    },
+    previousPaginate: function previousPaginate() {
+      this.jsonUrl = this.paginate.prev_page_url;
+      this.getJson();
+      // console.log(this.jsonUrl);
+    },
+    getJson: function getJson() {
       var _this2 = this;
 
-      return this.posts.filter(function (item) {
-        return item.title.toLowerCase().includes(_this2.search.toLowerCase());
+      axios.get(this.jsonUrl).then(function (response) {
+        return _this2.paginate = response.data;
+      }).then(function (response) {
+        return _this2.posts = _this2.paginate.data;
+      }).then(function (response) {
+        return _this2.firstPage = _this2.paginate.from;
+      }).then(function (response) {
+        return _this2.currentPage = _this2.paginate.current_page;
+      }).then(function (response) {
+        return _this2.total = _this2.paginate.total;
+      }).then(function (response) {
+        return _this2.perPage = _this2.paginate.per_page;
+      }).then(function (response) {
+        return console.log(_this2.paginate);
+      }).then(function (response) {
+        return __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* default */].$emit('allPostCount', _this2.posts.length);
+      }).catch(function (error) {
+        return console.log(error);
       });
+    },
+    isFloat: function isFloat(n) {
+      return Number(n) === n && n % 1 !== 0;
+    }
+  },
+  computed: {
+    filteredPosts: function filteredPosts() {
+      var _this3 = this;
+
+      return this.posts.filter(function (item) {
+        return item.title.toLowerCase().includes(_this3.search.toLowerCase());
+      });
+    },
+    checkLastPage: function checkLastPage() {
+      var checkPage = this.total / this.perPage;
+      if (this.isFloat(checkPage)) {
+        return ~~checkPage + 1;
+      }
+      return checkPage;
     }
   }
 });
@@ -20078,6 +20127,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { staticClass: "container" },
     [
       _c("div", { staticClass: "input-group" }, [
         _c("input", {
@@ -20137,7 +20187,7 @@ var render = function() {
                       staticStyle: { "text-decoration": "none" },
                       attrs: { href: "javascript:void(0)" }
                     },
-                    [_vm._v(_vm._s(categories.name))]
+                    [_vm._v("\n        " + _vm._s(categories.name))]
                   )
                 ]
               )
@@ -20151,7 +20201,29 @@ var render = function() {
       _vm._v(" "),
       _c("hr"),
       _vm._v(" "),
-      _vm._m(1)
+      _c("div", { staticClass: "clearfix" }, [
+        _vm.firstPage !== 1
+          ? _c(
+              "a",
+              {
+                staticClass: "btn btn-primary float-left",
+                on: { click: _vm.previousPaginate }
+              },
+              [_vm._v(" Previous")]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.currentPage !== _vm.checkLastPage
+          ? _c(
+              "a",
+              {
+                staticClass: "btn btn-primary float-right",
+                on: { click: _vm.nextPaginate }
+              },
+              [_vm._v("Next")]
+            )
+          : _vm._e()
+      ])
     ],
     2
   )
@@ -20165,18 +20237,6 @@ var staticRenderFns = [
       _c("button", { staticClass: "btn btn-info" }, [
         _c("span", { staticClass: "fa fa-search" })
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "clearfix" }, [
-      _c(
-        "a",
-        { staticClass: "btn btn-primary float-right", attrs: { href: "#" } },
-        [_vm._v("Older Posts →")]
-      )
     ])
   }
 ]
@@ -20321,6 +20381,52 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -20328,49 +20434,111 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       form: new Form({
         title: '',
-        body: ''
+        body: '',
+        recommend: ''
+      }),
+      formReply: new Form({
+        body: '',
+        issue_id: ''
+      }),
+      formRecommend: new Form({
+        post_id: '',
+        user_id: '',
+        recommendable: ''
       }),
       post: [],
+      user: [],
+      currentUser: false,
       post_id: window.location.href.split('posts/').pop(),
       displayNone: true,
       display: false,
-      recommendSign: 'btn btn-secondary',
-      recommendText: 'Recommend'
+      recommendSign: '',
+      recommendText: ''
 
     };
   },
   created: function created() {
     this.getIssue();
+    this.getAuthUser();
   },
-
 
   methods: {
     getIssue: function getIssue() {
       var _this = this;
 
-      axios.get('/api/posts/' + this.post_id + '/issues').then(function (response) {
+      axios.get('/api/posts/' + this.post_id + '/issues/replies').then(function (response) {
         return _this.post = response.data;
       }).then(function (response) {
-        return console.log(response);
+        return console.log(_this.post);
       }).catch(function (error) {
         return console.log(error);
       });
       console.log(this.post_id);
     },
-    onSubmit: function onSubmit() {
+    getAuthUser: function getAuthUser() {
       var _this2 = this;
 
-      this.form.post('/admin/posts/' + this.post_id + '/issues').then(function (response) {
-        return _this2.getIssue();
+      axios.get('/admin/users/').then(function (response) {
+        return _this2.user = response.data;
+      }).then(function (response) {
+        return _this2.isCurrentUser(_this2.post.recommends, _this2.user);
+      }).then(function (response) {
+        return console.log(_this2.currentUser);
+      }).catch(function (error) {
+        return console.log(error);
       });
     },
+    onSubmit: function onSubmit() {
+      var _this3 = this;
+
+      this.form.post('/admin/posts/' + this.post_id + '/issues').then(function (response) {
+        return _this3.getIssue();
+      });
+    },
+    onSubmitReply: function onSubmitReply() {
+      var _this4 = this;
+
+      this.formReply.post('/admin/replies').then(function (response) {
+        return _this4.getIssue();
+      });
+    },
+    onSubmitRecommend: function onSubmitRecommend() {
+      var _this5 = this;
+
+      this.formRecommend.post('/admin/recommends').then(function (response) {
+        return _this5.getIssue();
+      });
+    },
+    isCurrentUser: function isCurrentUser(recommends, user) {
+      if (recommends.length > 0) {
+        for (var i = 0; i < recommends.length; i++) {
+          // console.log(user);
+          if (user.id === recommends[i].user_id) {
+            this.recommendText = 'Recommended';
+            this.recommendSign = 'btn btn-success';
+            this.formRecommend.recommendable = true;
+          } else if (user.id !== recommends[i].user_id) {
+            this.recommendText = 'Recommend';
+            this.recommendSign = 'btn btn-secondary';
+            this.formRecommend.recommendable = false;
+          }
+        }
+      } else {
+        this.recommendText = 'Recommend';
+        this.recommendSign = 'btn btn-secondary';
+        this.formRecommend.recommendable = false;
+      }
+    },
     recommendOption: function recommendOption() {
+
       if (this.recommendSign == 'btn btn-secondary') {
         this.recommendSign = 'btn btn-success';
         this.recommendText = 'Recommended';
+        this.formRecommend.recommendable = true;
       } else {
         this.recommendSign = 'btn btn-secondary';
         this.recommendText = 'Recommend';
+        this.formRecommend.recommendable = false;
       }
     }
   }
@@ -20402,14 +20570,110 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("p", { staticClass: "text-danger" }, [
-        _vm._v(" " + _vm._s(_vm.post.recommend_point) + " recommended ")
+        _vm._v(" " + _vm._s(_vm.post.recommends_count) + " recommended ")
       ]),
       _vm._v(" "),
-      _c("button", {
-        class: _vm.recommendSign,
-        domProps: { textContent: _vm._s(_vm.recommendText) },
-        on: { click: _vm.recommendOption }
-      }),
+      _c(
+        "form",
+        {
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.onSubmitRecommend($event)
+            },
+            keydown: function($event) {
+              _vm.form.errors.clear($event.target.name)
+            }
+          }
+        },
+        [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: (_vm.formRecommend.post_id = this.post_id),
+                expression: "formRecommend.post_id = this.post_id"
+              }
+            ],
+            attrs: { type: "hidden" },
+            domProps: { value: (_vm.formRecommend.post_id = this.post_id) },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(
+                  (_vm.formRecommend.post_id = this),
+                  "post_id",
+                  $event.target.value
+                )
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: (_vm.formRecommend.user_id = this.user.id),
+                expression: "formRecommend.user_id = this.user.id"
+              }
+            ],
+            attrs: { type: "hidden" },
+            domProps: { value: (_vm.formRecommend.user_id = this.user.id) },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(
+                  (_vm.formRecommend.user_id = this.user),
+                  "id",
+                  $event.target.value
+                )
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.formRecommend.recommendable,
+                expression: "formRecommend.recommendable"
+              }
+            ],
+            attrs: { type: "hidden" },
+            domProps: { value: _vm.formRecommend.recommendable },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(
+                  _vm.formRecommend,
+                  "recommendable",
+                  $event.target.value
+                )
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("button", {
+            class: _vm.recommendSign,
+            attrs: { type: "submit" },
+            domProps: { textContent: _vm._s(_vm.recommendText) },
+            on: { click: _vm.recommendOption }
+          })
+        ]
+      ),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("br"),
       _vm._v(" "),
       _c("div", { domProps: { innerHTML: _vm._s(_vm.post.body) } }),
       _vm._v(" "),
@@ -20424,152 +20688,300 @@ var render = function() {
       _vm._l(_vm.post.issues, function(issue) {
         return _c(
           "div",
-          {
-            key: issue.id,
-            staticClass: "panel panel-white post panel-shadow",
-            staticStyle: { "margin-bottom": "10px" }
-          },
+          { key: issue.id, staticClass: "card border mb-5" },
           [
-            _vm._m(0, true),
+            _c("div", { staticClass: "card-body" }, [
+              _c("div", { staticClass: "post-heading" }, [
+                _c("div", { staticClass: "pull-left meta ml-3" }, [
+                  _vm._m(0, true),
+                  _vm._v(" "),
+                  _c("h6", { staticClass: "text-muted time" }, [
+                    _vm._v("1 minute ago")
+                  ]),
+                  _vm._v(" "),
+                  _c("h6", { class: { displayNone: _vm.display } }, [
+                    _vm._v(_vm._s(issue.title))
+                  ]),
+                  _vm._v(" "),
+                  _c("h6", { class: { displayNone: _vm.display } }, [
+                    _vm._v(_vm._s(issue.body))
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm._m(1, true),
+                _vm._v(" "),
+                _vm._m(2, true)
+              ])
+            ]),
             _vm._v(" "),
-            _c("div", { staticClass: "post-description" }, [
-              _c("h3", { class: { displayNone: _vm.display } }, [
-                _vm._v(_vm._s(issue.title))
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control",
-                class: { displayNone: _vm.displayNone },
-                attrs: { type: "text" }
-              }),
-              _vm._v(" "),
-              _c("p", { class: { displayNone: _vm.display } }, [
-                _vm._v(_vm._s(issue.body))
-              ]),
-              _vm._v(" "),
-              _c("textarea", {
-                staticClass: "form-control",
-                class: { displayNone: _vm.displayNone },
-                attrs: { rows: "10" }
-              })
-            ])
-          ]
+            _vm._l(issue.reply, function(reply) {
+              return _c(
+                "div",
+                {
+                  key: reply.id,
+                  staticClass: "card-body ml-5",
+                  staticStyle: { "border-top": "1px solid #e3e3e3" }
+                },
+                [
+                  _c("div", { staticClass: "post-heading" }, [
+                    _c("div", { staticClass: "pull-left meta ml-3" }, [
+                      _vm._m(3, true),
+                      _vm._v(" "),
+                      _c("h6", { staticClass: "text-muted time" }, [
+                        _vm._v("1 minute ago")
+                      ]),
+                      _vm._v(" "),
+                      _c("h6", { class: { displayNone: _vm.display } }, [
+                        _vm._v(_vm._s(reply.body))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(4, true),
+                    _vm._v(" "),
+                    _vm._m(5, true)
+                  ])
+                ]
+              )
+            }),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "card-body",
+                staticStyle: { "border-top": "1px solid #e3e3e3" }
+              },
+              [
+                _c(
+                  "form",
+                  {
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        return _vm.onSubmitReply($event)
+                      },
+                      keydown: function($event) {
+                        _vm.formReply.errors.clear($event.target.name)
+                      }
+                    }
+                  },
+                  [
+                    _c("div", { staticClass: "form-body" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("div", { staticClass: "col-md-12" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.formReply.body,
+                                expression: "formReply.body"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text", name: "body" },
+                            domProps: { value: _vm.formReply.body },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.formReply,
+                                  "body",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("span", {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: _vm.formReply.errors.has("body"),
+                                expression: "formReply.errors.has('body')"
+                              }
+                            ],
+                            staticClass: "help-block text-danger",
+                            domProps: {
+                              textContent: _vm._s(
+                                _vm.formReply.errors.get("body")
+                              )
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.formReply.issue_id,
+                            expression: "formReply.issue_id"
+                          }
+                        ],
+                        attrs: { type: "hidden", name: "issue_id" },
+                        domProps: { value: _vm.formReply.issue_id },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.formReply,
+                              "issue_id",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "ml-3 btn btn-success",
+                          attrs: { type: "submit" },
+                          on: {
+                            click: function($event) {
+                              _vm.formReply.issue_id = issue.id
+                            }
+                          }
+                        },
+                        [_vm._v(" Reply")]
+                      )
+                    ])
+                  ]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c("br")
+          ],
+          2
         )
       }),
       _vm._v(" "),
       _c("br"),
       _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
-      _c("div", { staticClass: "container" }, [
-        _c(
-          "form",
-          {
-            on: {
-              submit: function($event) {
-                $event.preventDefault()
-                return _vm.onSubmit($event)
+      _c("div", { staticClass: "card" }, [
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "container" }, [
+            _c(
+              "form",
+              {
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.onSubmit($event)
+                  },
+                  keydown: function($event) {
+                    _vm.form.errors.clear($event.target.name)
+                  }
+                }
               },
-              keydown: function($event) {
-                _vm.form.errors.clear($event.target.name)
-              }
-            }
-          },
-          [
-            _vm._m(1),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group row" }, [
-              _c("label", { attrs: { for: "title" } }, [
-                _vm._v("Question Title")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.form.title,
-                    expression: "form.title"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "text", name: "title" },
-                domProps: { value: _vm.form.title },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
+              [
+                _vm._m(6),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group row" }, [
+                  _c("label", { attrs: { for: "title" } }, [
+                    _vm._v("Question Title")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.title,
+                        expression: "form.title"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text", name: "title" },
+                    domProps: { value: _vm.form.title },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.form, "title", $event.target.value)
+                      }
                     }
-                    _vm.$set(_vm.form, "title", $event.target.value)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("span", {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.form.errors.has("title"),
-                    expression: "form.errors.has('title')"
-                  }
-                ],
-                staticClass: "help-block text-danger",
-                domProps: { textContent: _vm._s(_vm.form.errors.get("title")) }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group row" }, [
-              _c("label", { attrs: { for: "body" } }, [_vm._v("Question")]),
-              _vm._v(" "),
-              _c("textarea", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.form.body,
-                    expression: "form.body"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "text", rows: "10", name: "body" },
-                domProps: { value: _vm.form.body },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
+                  }),
+                  _vm._v(" "),
+                  _c("span", {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.form.errors.has("title"),
+                        expression: "form.errors.has('title')"
+                      }
+                    ],
+                    staticClass: "help-block text-danger",
+                    domProps: {
+                      textContent: _vm._s(_vm.form.errors.get("title"))
                     }
-                    _vm.$set(_vm.form, "body", $event.target.value)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("span", {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.form.errors.has("body"),
-                    expression: "form.errors.has('body')"
-                  }
-                ],
-                staticClass: "help-block text-danger",
-                domProps: { textContent: _vm._s(_vm.form.errors.get("body")) }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group row" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-secondary",
-                  attrs: { disabled: _vm.form.errors.any() }
-                },
-                [_vm._v("Submit")]
-              )
-            ])
-          ]
-        )
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group row" }, [
+                  _c("label", { attrs: { for: "body" } }, [_vm._v("Question")]),
+                  _vm._v(" "),
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.body,
+                        expression: "form.body"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text", rows: "5", name: "body" },
+                    domProps: { value: _vm.form.body },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.form, "body", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.form.errors.has("body"),
+                        expression: "form.errors.has('body')"
+                      }
+                    ],
+                    staticClass: "help-block text-danger",
+                    domProps: {
+                      textContent: _vm._s(_vm.form.errors.get("body"))
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group row" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-success",
+                      attrs: { disabled: _vm.form.errors.any() }
+                    },
+                    [_vm._v("Submit")]
+                  )
+                ])
+              ]
+            )
+          ])
+        ])
       ])
     ],
     2
@@ -20580,43 +20992,62 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "post-heading" }, [
-      _c("div", { staticClass: "pull-left image" }, [
-        _c("img", {
-          staticClass: "img-circle avatar",
-          attrs: {
-            src: "http://bootdey.com/img/Content/user_1.jpg",
-            alt: "user profile image"
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "pull-left meta" }, [
-        _c("div", { staticClass: "title h5" }, [
-          _c("a", { attrs: { href: "#" } }, [
-            _c("b", [_vm._v("Ryan Haywood")])
-          ]),
-          _vm._v(
-            "\n                    made a question.     \n                "
-          )
-        ]),
-        _vm._v(" "),
-        _c("h6", { staticClass: "text-muted time" }, [_vm._v("1 minute ago")])
-      ]),
-      _vm._v(" "),
-      _c("a", { attrs: { href: "javascript:void(0)" } }, [
-        _c("i", {
-          staticClass: "fa fa-trash-o text-danger",
-          staticStyle: { float: "right", "font-size": "20px" }
-        })
-      ]),
-      _vm._v(" "),
-      _c("a", { attrs: { href: "javascript:void(0)" } }, [
-        _c("i", {
-          staticClass: "fa fa-edit text-info",
-          staticStyle: { float: "right", "margin-right": "10px" }
-        })
-      ])
+    return _c("div", { staticClass: "title h5" }, [
+      _c("a", { attrs: { href: "#" } }, [_c("b", [_vm._v("Ryan Haywood")])]),
+      _vm._v("\n                    made a question.     \n                ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "javascript:void(0)" } }, [
+      _c("i", {
+        staticClass: "fa fa-trash-o text-danger",
+        staticStyle: { float: "right", "font-size": "20px" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "javascript:void(0)" } }, [
+      _c("i", {
+        staticClass: "fa fa-edit text-info",
+        staticStyle: { float: "right", "margin-right": "10px" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "title h5" }, [
+      _c("a", { attrs: { href: "#" } }, [_c("b", [_vm._v("Ryan Haywood")])]),
+      _vm._v("\n                    made a Reply.     \n                ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "javascript:void(0)" } }, [
+      _c("i", {
+        staticClass: "fa fa-trash-o text-danger",
+        staticStyle: { float: "right", "font-size": "20px" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "javascript:void(0)" } }, [
+      _c("i", {
+        staticClass: "fa fa-edit text-info",
+        staticStyle: { float: "right", "margin-right": "10px" }
+      })
     ])
   },
   function() {
@@ -21156,7 +21587,14 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "button",
-      { staticClass: "btn btn-danger", staticStyle: { float: "right" } },
+      {
+        staticClass: "btn btn-danger",
+        staticStyle: {
+          float: "right",
+          "margin-right": "10px",
+          "margin-top": "3px"
+        }
+      },
       [_c("i", { staticClass: "fa fa-trash" })]
     )
   },
@@ -21235,6 +21673,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
 //
 //
 //

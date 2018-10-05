@@ -15,7 +15,6 @@
         @include('admin-layouts.nav')
 
         <div id="page-wrapper">
-
             @yield('content')
         </div>
 

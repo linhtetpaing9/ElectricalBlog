@@ -1,5 +1,6 @@
 <?php
 
+use ElectricalBlog\Recommend;
 use Faker\Generator as Faker;
 
 /*
@@ -61,9 +62,43 @@ $factory->define(ElectricalBlog\Reply::class, function (Faker $faker) {
     ];
 });
 
+$factory->define(ElectricalBlog\Recommend::class, function (Faker $faker) {
+    return [
+        'post_id' => function () {
+            return factory('ElectricalBlog\Post')->create()->id;
+        },
+        'user_id' => function () {
+            return factory('ElectricalBlog\User')->create()->id;
+        }
+    ];
+});
+
 $factory->define(ElectricalBlog\Category::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'description' => $faker->sentence,
+    ];
+});
+
+
+$factory->define(ElectricalBlog\Job::class, function (Faker $faker) {
+    return [
+        'user_id' => function () {
+            return factory('ElectricalBlog\User')->create()->id;
+        },
+        'title' => $faker->sentence,
+        'salary' => $faker->randomDigitNotNull.'lakhs',
+        'body' => $faker->realText($maxNbChars = 10000, $indexSize = 2),
+    ];
+});
+
+$factory->define(ElectricalBlog\Book::class, function (Faker $faker) {
+    return [
+        
+        'book_name' => $faker->name,
+        'author' => $faker->name,
+        'storage_provider_name' => 'DropBox',
+        'book_image' => 'http://electricalblog.test/storage/42104354_2270277199711723_1057977902454276096_n.jpg',
+        'book_link' => 'http://electricalblog.test/storage/42104354_2270277199711723_1057977902454276096_n.jpg'
     ];
 });

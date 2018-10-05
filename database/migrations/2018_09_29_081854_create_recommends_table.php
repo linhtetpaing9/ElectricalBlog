@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAgreementsTable extends Migration
+class CreateRecommendsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateAgreementsTable extends Migration
      */
     public function up()
     {
-        Schema::create('agreements', function (Blueprint $table) {
+        Schema::create('recommends', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('agreementable_id');
-            $table->string('agreementable_type');
-            $table->unique(['user_id', 'agreementable_id']);
+            $table->integer('post_id');
+            $table->integer('user_id');
+            $table->unique(['post_id', 'user_id']);
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateAgreementsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('agreements');
+        Schema::dropIfExists('recommends');
     }
 }

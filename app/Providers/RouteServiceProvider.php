@@ -2,7 +2,9 @@
 
 namespace ElectricalBlog\Providers;
 
+use ElectricalBlog\Book;
 use ElectricalBlog\Issue;
+use ElectricalBlog\Job;
 use ElectricalBlog\Post;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +36,14 @@ class RouteServiceProvider extends ServiceProvider
         });
         Route::bind('trashed_issue', function ($id) {
             return Issue::onlyTrashed()->findOrFail($id);
+        });
+
+        Route::bind('trashed_book', function ($id) {
+            return Book::onlyTrashed()->findOrFail($id);
+        });
+
+        Route::bind('trashed_job', function ($id) {
+            return Job::onlyTrashed()->findOrFail($id);
         });
     }
 

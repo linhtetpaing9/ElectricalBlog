@@ -3,6 +3,7 @@
 namespace ElectricalBlog;
 
 use ElectricalBlog\Post;
+use ElectricalBlog\Reply;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Yajra\Datatables\Datatables;
 
@@ -13,6 +14,11 @@ class Issue extends Model
     public function user()
     {
         return $this->belongsTo(User::class)->withDefault();
+    }
+
+    public function reply()
+    {
+        return $this->hasMany(Reply::class);
     }
 
     public function post()

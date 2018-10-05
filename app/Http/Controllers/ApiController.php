@@ -2,8 +2,10 @@
 
 namespace ElectricalBlog\Http\Controllers;
 
+use ElectricalBlog\Book;
 use ElectricalBlog\Category;
 use ElectricalBlog\Issue;
+use ElectricalBlog\Job;
 use ElectricalBlog\Post;
 use Illuminate\Http\Request;
 
@@ -15,9 +17,16 @@ class ApiController extends Controller
         return $categories;
     }
 
-    public function apiIndexIssue(Post $post)
+    public function searchPostsByCategories()
     {
-        return Post::with(['issues', 'categories'])->findOrFail($post->id);
+        return Post::with('categories')->latest()->paginate(5);
+    }
+
+    public function postIndex(Post $post)
+    {
+        return Post::with(['issues.reply', 'categories', 'recommends'])
+                    ->withCount('recommends')
+                    ->findOrFail($post->id);
     }
 
     public function apiIndexPost()
@@ -48,5 +57,25 @@ class ApiController extends Controller
     public function replyDatatable(Request $request)
     {
         return Reply::getDatatableQuery($request);
+    }
+
+    public function bookDatatable(Request $request)
+    {
+        return Book::getDatatableQuery($request);
+    }
+
+    public function bookTrashDatatable(Request $request)
+    {
+        return Book::onlyTrashed()->getTrashDatatableQuery($request);
+    }
+
+    public function jobDatatable(Request $request)
+    {
+        return Job::getDatatableQuery($request);
+    }
+
+    public function jobTrashDatatable(Request $request)
+    {
+        return Job::onlyTrashed()->getTrashDatatableQuery($request);
     }
 }

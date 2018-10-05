@@ -3,8 +3,8 @@
     <div class="col-lg-12">
       <div class="panel panel-success" v-for="category in categories" :key="category.id">
           <form @submit.prevent="onDelete(category.id)">
-                  <button class="btn btn-danger" style="float: right;"><i class="fa fa-trash"></i></button>
-              </form>
+            <button class="btn btn-danger" style="float: right; margin-right: 10px; margin-top: 3px;"><i class="fa fa-trash"></i></button>
+          </form>
           <div class="panel-heading">
               {{category.name}}
               

@@ -2,6 +2,7 @@
 
 namespace ElectricalBlog;
 
+use ElectricalBlog\Recommend;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Yajra\Datatables\Datatables;
 
@@ -19,6 +20,11 @@ class Post extends Model
     {
         return $this->belongsToMany(Category::class, 'post_categories');
     }
+
+    public function recommends()
+    {
+        return $this->hasMany(Recommend::class);
+    }
     
     public function issues()
     {
@@ -27,7 +33,6 @@ class Post extends Model
 
     public function scopeFilter($query, $filters)
     {
-        // dd($query);
         $filters->apply($query);
     }
 

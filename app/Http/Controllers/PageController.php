@@ -8,8 +8,12 @@ use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
-    public function index()
+    public function home()
     {
-        return view('main-pages.index', compact('categories'));
+        return view('main-pages.home', compact('categories'));
+    }
+    public function book()
+    {
+        return view('main-pages.book');
     }
 }
