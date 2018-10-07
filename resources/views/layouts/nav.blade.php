@@ -9,17 +9,40 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="/"> Home</a>
+          <a class="nav-link" href="/"> ပင်မစာမျက်နှာ</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/posts"> Posts</a>
+          <a class="nav-link" href="{{route('posts.post')}}"> ပိုစ့်များ</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Electrical Jobs</a>
+          <a class="nav-link" href="{{route('books.book')}}"> စာအုပ်</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Contact</a>
+          <a class="nav-link" href="{{route('jobs.job')}}"> အလုပ်အကိုင်များ</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{route('contacts.contact')}}">ကျွန်တော်တို့အကြောင်း</a>
+        </li>
+        @if( Auth::check() )
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{Auth::user()->name}}</a>
+              <div class="dropdown-menu dropdown-menu-right scale-up">
+                  <ul class="dropdown-user">
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
+                    <i class="fa fa-power-off"></i>
+                    Logout
+                    </a>
+                    <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        {{ csrf_field() }}
+                    </form>
+                  </ul>
+              </div>
+          </li>
+          @else
+          <li class="nav-item">
+            <a href="/login" class="nav-link">Login</a>
+          </li>
+          @endif
       </ul>
     </div>
   </div>

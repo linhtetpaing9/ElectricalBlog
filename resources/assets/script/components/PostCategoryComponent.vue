@@ -1,5 +1,5 @@
 <template>
-    <div class="card" style="width: 18rem;">
+    <div class="card">
       <ul class="list-group list-group-flush" >
         <li class="list-group-item">
           <a href="javascript:void(0)" style="text-decoration: none" @click="unsetCategoryId()">
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+  import EventBus from './event-bus.js' 
 	export default{
     props: {
       myProp: String
@@ -26,27 +27,25 @@
       return {
         categories: [],
         posts_count: 0,
-        categoryUrl: '/categories/',
-        postUrl: '/posts/'
       }
     },
     created(){
-        axios.get('/api/categories')
+        axios.get('/api/categories/posts')
               .then( (response) => this.categories = response.data  )
-              .then( (response) => console.log(response) )
+              .then( (response) => console.log(this.categories) )
               .catch( (error) => console.log(error) );
 
-        window.events.$on('allPostCount', (posts_count) => {
+        EventBus.$on('allPostCount', (posts_count) => {
           console.log(posts_count + ' posts');
           this.posts_count = posts_count;
         });
     },
     methods:{
         setCategoryId(category_id){
-            window.events.$emit('setCategory', category_id);
+            EventBus.$emit('setCategory', category_id);
         },
         unsetCategoryId(){
-            window.events.$emit('unsetCategory');
+            EventBus.$emit('unsetCategory');
         }
     }
 	}

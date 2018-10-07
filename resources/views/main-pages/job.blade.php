@@ -24,10 +24,10 @@
 @section('content')
 <div id="app" class="row">
   <div class="col-lg-8 col-md-10">
-      <post-searching-component></post-searching-component>
+      <job-searching-component></job-searching-component>
   </div>
-  <div class="col-lg-4 col-md-2">
-      <post-category-component></post-category-component>
+  <div class="col-lg-4 col-md-2 mx-auto">
+      <job-category-component></job-category-component>
   </div>
 </div>
 
@@ -36,5 +36,5 @@
 
 @section('script')
  <script src="{{ asset('js/app.js') }}" defer></script>
-
+<script src="https://unpkg.com/rabbit-node@1.0.3/dist/rabbit.min.js"></script>
 @endsection

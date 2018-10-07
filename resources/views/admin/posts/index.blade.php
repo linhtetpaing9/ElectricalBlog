@@ -2,6 +2,7 @@
 
 
 @section('content')
+<br>
 <div class="row">
     <div class="col-lg-12">
       <div class="panel panel-default">
@@ -9,13 +10,15 @@
             DataTables Advanced Tables
         </div>
         <div class="panel-body">
+        @include('flash::message')
+
         <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
               <thead>
                   <tr>
                       <th>Title</th>
-                      <th>Body</th>
                       <th>User</th>
                       <th>Create at</th>
+                      <th>Reading Time</th>
                       <th></th>
                       <th></th>
                   </tr>
@@ -45,11 +48,11 @@
             ajax: '{!! route('api.posts.datatable') !!}',
             columns: [
             { data: 'title', name: 'title' }, 
-            { data: 'body', name: 'body' }, 
             { data: 'user', name: 'user' }, 
             { data: 'created_at', name: 'created_at' }, 
+            { data: 'readable_time', name: 'readable_time' }, 
             { data: 'edit', name: 'edit' }, 
-            { data: 'destroy', name: 'destroy' }, 
+            { data: 'delete', name: 'delete' }, 
             ]
         });
     });

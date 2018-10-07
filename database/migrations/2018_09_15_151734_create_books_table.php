@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAgreementsTable extends Migration
+class CreateBooksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,15 @@ class CreateAgreementsTable extends Migration
      */
     public function up()
     {
-        Schema::create('agreements', function (Blueprint $table) {
+        Schema::create('books', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('agreementable_id');
-            $table->string('agreementable_type');
-            $table->unique(['user_id', 'agreementable_id']);
+            $table->string('book_name');
+            $table->string('author');
+            $table->string('storage_provider_name');
+            $table->string('book_image');
+            $table->string('book_link');
+            $table->text('review');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -30,6 +33,6 @@ class CreateAgreementsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('agreements');
+        Schema::dropIfExists('books');
     }
 }
