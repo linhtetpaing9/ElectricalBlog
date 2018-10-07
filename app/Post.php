@@ -24,6 +24,12 @@ class Post extends Model
     {
         return $this->belongsTo(User::class)->withDefault();
     }
+
+    public function scopeFilter($query, $filters)
+    {
+        // dd($filters);
+        $filters->apply($query);
+    }
     
     public function categories()
     {
@@ -38,11 +44,6 @@ class Post extends Model
     public function issues()
     {
         return $this->hasMany(Issue::class);
-    }
-
-    public function scopeFilter($query, $filters)
-    {
-        $filters->apply($query);
     }
 
     public function scopeGetDatatableQuery($query, $request)

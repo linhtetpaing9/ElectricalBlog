@@ -6,7 +6,9 @@
                 <button class="btn btn-info"><span class="fa fa-search"></span></button>
             </div>
         </div>
-        <div class="post-preview" v-for="post in filteredPosts">
+        <span class="text-success" >ရှာဖွေရလဒ်စုစုပေါင်း {{posts.length | myanmarNumber}}</span>
+
+        <div class="post-preview" v-for="post in posts">
           <a :href="postUrl + post.id">
             <h2 class="post-title"> {{ post.title }} </h2>
             <span class="text-success">continue reading</span>
@@ -25,6 +27,7 @@
 
 <script>
 import EventBus from './event-bus.js' 
+var myanmarNumbers = require("myanmar-numbers");
 
   export default {
 
@@ -42,7 +45,6 @@ import EventBus from './event-bus.js'
     },
     created(){
         this.getJson();
-              
         EventBus.$on('setCategory', (category_id) => {
           this.category_id = category_id;  
           console.log('setCategory event caught', this.category_id);
@@ -59,6 +61,17 @@ import EventBus from './event-bus.js'
         });
 
     },
+    watch: {
+        search(after, before) {
+            this.getSearchResult();
+        }
+    },
+    filters: {
+      myanmarNumber(value) {
+        return myanmarNumbers(value, "my");
+        console.log(value);
+      }
+    },
     methods: {
       getJson(){
         axios.get(this.jsonUrl)
@@ -66,13 +79,12 @@ import EventBus from './event-bus.js'
           .then( (response) => EventBus.$emit('allPostCount', this.posts.length) )
           .catch( (error) => console.log(error) );
       },
+      getSearchResult(){
+        axios.get('api/search/posts', {params: {title : this.search}})
+              .then((response) => this.posts = response.data)
+              .catch((error) => console.log(error));
+      }
     },
-    computed: {
-      filteredPosts() {
-        return this.posts.filter(item => {
-          return item.title.toLowerCase().includes(Rabbit.zg2uni(this.search).toLowerCase())
-        })
-      },
-    }
+    
   }
 </script>

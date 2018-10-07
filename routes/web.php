@@ -145,6 +145,10 @@ Route::prefix('api')->group(function () {
     Route::get('/isCurrentUsers', function () {
         return Auth::user();
     });
+
+    //Search
+    Route::get('/search/posts', 'SearchController@searchPost');
+    Route::get('/search/jobs', 'SearchController@searchJob');
 });
 
 // Authentication Routes...

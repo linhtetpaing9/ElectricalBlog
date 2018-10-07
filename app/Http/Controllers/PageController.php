@@ -3,6 +3,7 @@
 namespace ElectricalBlog\Http\Controllers;
 
 use ElectricalBlog\Category;
+use ElectricalBlog\Job;
 use ElectricalBlog\Post;
 use Illuminate\Http\Request;
 
@@ -19,12 +20,14 @@ class PageController extends Controller
 
     public function post()
     {
-        return view('main-pages.post');
+        $post_count = Post::count();
+        return view('main-pages.post', compact('post_count'));
     }
 
     public function job()
     {
-        return view('main-pages.job');
+        $jobs_count = Job::count();
+        return view('main-pages.job', compact('jobs_count'));
     }
 
     public function contact()

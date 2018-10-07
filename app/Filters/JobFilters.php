@@ -2,7 +2,7 @@
 
 namespace ElectricalBlog\Filters;
 
-class PostFilters extends Filters
+class JobFilters extends Filters
 {
     protected $filters = [
         'title'

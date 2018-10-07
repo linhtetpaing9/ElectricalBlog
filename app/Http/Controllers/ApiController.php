@@ -25,7 +25,7 @@ class ApiController extends Controller
 
     public function searchPostsByCategories()
     {
-        return Post::with('categories')->latest()->get();
+        return Post::with('categories')->latest()->take(10)->get();
     }
 
     public function postIndex(Post $post)

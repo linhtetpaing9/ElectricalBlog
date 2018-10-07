@@ -1,5 +1,6 @@
 import './bootstrap';
 
+
 require('./../talvbansal/media-manager/js/media-manager');
 
 Vue.component('postSearchingComponent', require('./components/PostSearchingComponent.vue'));

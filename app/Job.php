@@ -28,6 +28,12 @@ class Job extends Model
     {
         return $this->belongsToMany(Category::class, 'job_categories');
     }
+    
+    public function scopeFilter($query, $filters)
+    {
+        // dd($filters);
+        $filters->apply($query);
+    }
 
     public function scopeGetDatatableQuery($query, $request)
     {

@@ -20323,8 +20323,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
+var myanmarNumbers = __webpack_require__(80);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
@@ -20344,7 +20347,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     var _this = this;
 
     this.getJson();
-
     __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* default */].$on('setCategory', function (category_id) {
       _this.category_id = category_id;
       console.log('setCategory event caught', _this.category_id);
@@ -20365,6 +20367,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     });
   },
 
+  watch: {
+    search: function search(after, before) {
+      this.getSearchResult();
+    }
+  },
+  filters: {
+    myanmarNumber: function myanmarNumber(value) {
+      return myanmarNumbers(value, "my");
+      console.log(value);
+    }
+  },
   methods: {
     getJson: function getJson() {
       var _this2 = this;
@@ -20376,17 +20389,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }).catch(function (error) {
         return console.log(error);
       });
-    }
-  },
-  computed: {
-    filteredPosts: function filteredPosts() {
+    },
+    getSearchResult: function getSearchResult() {
       var _this3 = this;
 
-      return this.posts.filter(function (item) {
-        return item.title.toLowerCase().includes(Rabbit.zg2uni(_this3.search).toLowerCase());
+      axios.get('api/search/posts', { params: { title: this.search } }).then(function (response) {
+        return _this3.posts = response.data;
+      }).catch(function (error) {
+        return console.log(error);
       });
     }
   }
+
 });
 
 /***/ }),
@@ -20427,7 +20441,14 @@ var render = function() {
         _vm._m(0)
       ]),
       _vm._v(" "),
-      _vm._l(_vm.filteredPosts, function(post) {
+      _c("span", { staticClass: "text-success" }, [
+        _vm._v(
+          "ရှာဖွေရလဒ်စုစုပေါင်း " +
+            _vm._s(_vm._f("myanmarNumber")(_vm.posts.length))
+        )
+      ]),
+      _vm._v(" "),
+      _vm._l(_vm.posts, function(post) {
         return _c(
           "div",
           { staticClass: "post-preview" },
@@ -20576,8 +20597,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
+var myanmarNumbers = __webpack_require__(80);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
@@ -20619,6 +20643,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     });
   },
 
+  watch: {
+    search: function search(after, before) {
+      this.getSearchResult();
+    }
+  },
+  filters: {
+    myanmarNumber: function myanmarNumber(value) {
+      return myanmarNumbers(value, "my");
+      console.log(value);
+    }
+  },
   methods: {
     getJson: function getJson() {
       var _this2 = this;
@@ -20631,20 +20666,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return console.log(error);
       });
     },
-    changeUni2Zg: function changeUni2Zg(posts) {
-      posts.map(function (job) {
-        console.log(Rabbit.uni2zg(job.title));
-        return Rabbit.uni2zg(job.title);
-      });
-      console.log(posts);
-    }
-  },
-  computed: {
-    filteredJobs: function filteredJobs() {
+    getSearchResult: function getSearchResult() {
       var _this3 = this;
 
-      return this.jobs.filter(function (item) {
-        return item.title.toLowerCase().includes(Rabbit.zg2uni(_this3.search).toLowerCase());
+      axios.get('api/search/jobs', { params: { title: this.search } }).then(function (response) {
+        return _this3.jobs = response.data;
+      }).catch(function (error) {
+        return console.log(error);
       });
     }
   }
@@ -20688,7 +20716,14 @@ var render = function() {
         _vm._m(0)
       ]),
       _vm._v(" "),
-      _vm._l(_vm.filteredJobs, function(job) {
+      _c("span", { staticClass: "text-success" }, [
+        _vm._v(
+          "ရှာဖွေရလဒ်စုစုပေါင်း " +
+            _vm._s(_vm._f("myanmarNumber")(_vm.jobs.length))
+        )
+      ]),
+      _vm._v(" "),
+      _vm._l(_vm.jobs, function(job) {
         return _c(
           "div",
           { staticClass: "post-preview" },
@@ -22408,6 +22443,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 
+var myanmarNumbers = __webpack_require__(80);
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     myProp: String
@@ -22435,6 +22471,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     });
   },
 
+  filters: {
+    myanmarNumber: function myanmarNumber(value) {
+      return myanmarNumbers(value, "my");
+      console.log(value);
+    }
+  },
   methods: {
     setCategoryId: function setCategoryId(category_id) {
       __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* default */].$emit('setCategory', category_id);
@@ -22470,13 +22512,12 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("\n        All\n      ")]
+            [_vm._v("\n        နောက်ဆုံးရပို့စ်များ\n      ")]
           ),
           _vm._v(" "),
-          _c("span", {
-            staticClass: "badge badge-pill badge-danger",
-            domProps: { textContent: _vm._s(this.posts_count) }
-          })
+          _c("span", { staticClass: "badge badge-pill badge-danger" }, [
+            _vm._v(_vm._s(_vm._f("myanmarNumber")(this.posts_count)))
+          ])
         ]),
         _vm._v(" "),
         _vm._l(this.categories, function(category) {
@@ -22498,10 +22539,9 @@ var render = function() {
                 [_vm._v("\n      " + _vm._s(category.name) + "\n      ")]
               ),
               _vm._v(" "),
-              _c("span", {
-                staticClass: "badge badge-pill badge-danger",
-                domProps: { textContent: _vm._s(category.posts_count) }
-              })
+              _c("span", { staticClass: "badge badge-pill badge-danger" }, [
+                _vm._v(_vm._s(_vm._f("myanmarNumber")(category.posts_count)))
+              ])
             ]
           )
         })
@@ -22595,6 +22635,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 
+var myanmarNumbers = __webpack_require__(80);
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     myProp: String
@@ -22622,6 +22663,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     });
   },
 
+  filters: {
+    myanmarNumber: function myanmarNumber(value) {
+      return myanmarNumbers(value, "my");
+      console.log(value);
+    }
+  },
   methods: {
     setCategoryIdJob: function setCategoryIdJob(category_id) {
       __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* default */].$emit('setCategoryJob', category_id);
@@ -22657,13 +22704,12 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("\n        All\n      ")]
+            [_vm._v("\n        နောက်ဆုံးရအလုပ်အကိုင်များ\n      ")]
           ),
           _vm._v(" "),
-          _c("span", {
-            staticClass: "badge badge-pill badge-danger",
-            domProps: { textContent: _vm._s(this.jobs_count) }
-          })
+          _c("span", { staticClass: "badge badge-pill badge-danger" }, [
+            _vm._v(_vm._s(_vm._f("myanmarNumber")(this.jobs_count)))
+          ])
         ]),
         _vm._v(" "),
         _vm._l(this.categories, function(category) {
@@ -22685,10 +22731,9 @@ var render = function() {
                 [_vm._v("\n      " + _vm._s(category.name) + "\n      ")]
               ),
               _vm._v(" "),
-              _c("span", {
-                staticClass: "badge badge-pill badge-danger",
-                domProps: { textContent: _vm._s(category.jobs_count) }
-              })
+              _c("span", { staticClass: "badge badge-pill badge-danger" }, [
+                _vm._v(_vm._s(_vm._f("myanmarNumber")(category.jobs_count)))
+              ])
             ]
           )
         })
@@ -23294,6 +23339,141 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function myanmarNumbers(str, toLanguage) {
+  str += "";
+  toLanguage = (toLanguage || "en").toLowerCase();
+
+  var replaceNumbers = function(txt) {
+    var numbers = {
+      // Myanmar and Shan numbers
+      "๐": 0, // Thai zero
+      "ဝ": 0, // Myanmar letter "wa" sometimes used as zero
+      "၀": 0,
+      "၁": 1,
+      "၂": 2,
+      "၃": 3,
+      "၄": 4,
+      "၅": 5,
+      "၆": 6,
+      "၇": 7,
+      "၈": 8,
+      "၉": 9,
+      "႐": 0,
+      "႑": 1,
+      "႒": 2,
+      "႓": 3,
+      "႔": 4,
+      "႕": 5,
+      "႖": 6,
+      "႗": 7,
+      "႘": 8,
+      "႙": 9
+    };
+
+    var keys = Object.keys(numbers);
+    if (toLanguage === "my") {
+      // Myanmar
+      for (var n = 2; n <= 11; n++) {
+        var re = new RegExp(numbers[keys[n]] + "", "g");
+        txt = txt.replace(re, keys[n]);
+      }
+    } else if (toLanguage === "shan") {
+      // Shan numerals - convert any Myanmar numbers to international first
+      var txt = myanmarNumbers(txt) + "";
+      for (var n = 12; n < keys.length; n++) {
+        var re = new RegExp(numbers[keys[n]] + "", "g");
+        txt = txt.replace(re, keys[n]);
+      }
+    } else {
+      for (var n = 0; n < keys.length; n++) {
+        // default
+        if (n === 1) {
+          txt = txt.replace(/([၁၂၃၄၅၆၇၈၉])ဝ/g, '$10');
+          txt = txt.replace(/ဝ([၁၂၃၄၅၆၇၈၉])/g, '0$1');
+          while (txt.match(/ဝ(\d)/)) {
+            txt = txt.replace(/ဝ(\d)/g, '0$1');
+          }
+          while (txt.match(/(\d)ဝ/)) {
+            txt = txt.replace(/(\d)ဝ/g, '$10');
+          }
+        } else {
+          var re = new RegExp(keys[n], "g");
+          txt = txt.replace(re, numbers[keys[n]]);
+        }
+      }
+    }
+    return txt;
+  };
+
+  var getDateDivider = function(txt) {
+    var dividers = [".","/","-"];
+    for (var r = 0; r < dividers.length; r++) {
+      var test = txt.split(dividers[r]);
+      if (test.length === 3) {
+        var day = test[0] * 1;
+        var month = test[1] * 1;
+        var year = test[2] * 1;
+        if (day && month && year && !isNaN(day) && !isNaN(month) && !isNaN(year)) {
+          if (day < 32 && month < 13 && year < 4000) {
+            return dividers[r];
+          }
+        }
+      }
+    }
+  };
+
+  var numerals = replaceNumbers(str);
+  if (isNaN(1 * numerals)) {
+    // check for Date parsing
+    if ((toLanguage === "my" || toLanguage === "shan") && isNaN(1 * str)) {
+      try {
+        var d = new Date(str);
+        if (isNaN(d * 1)) {
+          throw 'invalid date';
+        }
+        // valid date - output numbers in this order and send for conversion
+        return replaceNumbers([d.getDate(), d.getMonth() + 1, d.getFullYear()].join("."));
+      } catch(e) {
+        // not a valid Date or a number - return formatted string
+        return numerals;
+      }
+    } else {
+      var dateDivider = getDateDivider(numerals);
+      if (dateDivider) {
+        var split = numerals.split(dateDivider);
+        var rearranged = [split[1], split[0], split[2]].join(dateDivider);
+        try {
+          var d = new Date(rearranged);
+          // valid date
+          return d;
+        } catch (e) {
+          // not a valid Date or a number - return formatted String
+          return numerals;
+        }
+      } else {
+        // not a Date or a Number - return formatted String
+        return numerals;
+      }
+    }
+  } else {
+    // return a Number
+    return 1 * numerals;
+  }
+}
+
+if (true) {
+  module.exports = myanmarNumbers;
+}
+
 
 /***/ })
 /******/ ]);

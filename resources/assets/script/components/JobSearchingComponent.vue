@@ -6,7 +6,9 @@
                 <button class="btn btn-info"><span class="fa fa-search"></span></button>
             </div>
         </div>
-        <div class="post-preview" v-for="job in filteredJobs">
+        <span class="text-success" >ရှာဖွေရလဒ်စုစုပေါင်း {{jobs.length | myanmarNumber}}</span>
+
+        <div class="post-preview" v-for="job in jobs">
           <a :href="jobUrl + job.id">
             <h2 class="post-title"> {{ job.title }} </h2>
             <span class="text-success">continue reading</span>
@@ -24,7 +26,8 @@
 </template>
 
 <script>
-import EventBus from './event-bus.js' 
+import EventBus from './event-bus.js';
+var myanmarNumbers = require("myanmar-numbers");
 
   export default {
 
@@ -60,6 +63,17 @@ import EventBus from './event-bus.js'
         });
 
     },
+    watch: {
+        search(after, before) {
+            this.getSearchResult();
+        }
+    },
+    filters: {
+      myanmarNumber(value) {
+        return myanmarNumbers(value, "my");
+        console.log(value);
+      }
+    },
     methods: {
       getJson(){
         axios.get(this.jsonUrl)
@@ -67,22 +81,12 @@ import EventBus from './event-bus.js'
           .then( (response) => EventBus.$emit('allJobCount', this.jobs.length) )
           .catch( (error) => console.log(error) );
       },
-      changeUni2Zg(posts){
-        posts.map(function(job){
-          console.log(Rabbit.uni2zg(job.title));
-          return Rabbit.uni2zg(job.title);
-        });
-        console.log(posts);
-      },
+      getSearchResult(){
+        axios.get('api/search/jobs', {params: {title : this.search}})
+              .then((response) => this.jobs = response.data)
+              .catch((error) => console.log(error));
+      }
 
-    },
-    computed: {
-      filteredJobs() {
-        return this.jobs.filter(item => {
-          return item.title.toLowerCase().includes(Rabbit.zg2uni(this.search).toLowerCase())
-        })
-      },
-      
     }
   }
 </script>
