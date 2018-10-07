@@ -9,7 +9,7 @@
 
 
 @section('content')
-<div class="row" id="app">
+<div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">Post Create</h1>
         <form action="{{route('posts.store')}}" id="form-data" method="POST">
@@ -18,7 +18,14 @@
           <label for="title">Title</label>
           <input type="text" class="form-control" placeholder="Title Here" name="title">
         </div>
-        
+
+        <div class="form-group">
+          <label for="title">Estimate Reading Time</label>
+          <input type="text" class="form-control" placeholder="5 minutes" name="readable_time">
+        </div>
+        <div id="app">
+        <file-browser-component></file-browser-component>       
+        </div>
         <div class="form-group">
           <label for="categories">Categories</label>
           <select name="categories[]" class="form-control myclass" multiple="multiple">
@@ -50,7 +57,7 @@
   <script src="{{asset('js/select2.min.js')}}"></script>
 
   <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
-  <script src="{{ asset('js/app.js') }}" defer></script>
+  <script src="{{ asset('js/app.js') }}"></script>
 
 
  <script>
@@ -66,7 +73,7 @@
                     "save table contextmenu directionality emoticons template paste textcolor",
                     "image code"
                 ],
-                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | print preview media fullpage | forecolor backcolor emoticons | undo redo | link image",
+                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | print preview media fullpage | forecolor backcolor emoticons | link image",
                 image_title: true, 
 
               automatic_uploads: true,

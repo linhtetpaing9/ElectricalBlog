@@ -150,7 +150,7 @@ return [
         /*
          * Package Service Providers...
          */
-
+        \TalvBansal\MediaManager\Providers\MediaManagerServiceProvider::class,
         /*
          * Application Service Providers...
          */

@@ -15,6 +15,7 @@
     @include('layouts.nav')
 
     @yield('header')
+    {{-- @include('layouts.breadcrumb') --}}
 
     <!-- Main Content -->
     <div class="container">
@@ -31,6 +32,7 @@
     @include('layouts.footer')
    
     @include('layouts.script')
+    <a href="#" class="scrollToTop"><span class="fa fa-arrow-up"></span></a>
 
   </body>
 
