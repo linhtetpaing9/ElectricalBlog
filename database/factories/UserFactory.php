@@ -64,9 +64,10 @@ $factory->define(ElectricalBlog\Reply::class, function (Faker $faker) {
 
 $factory->define(ElectricalBlog\Recommend::class, function (Faker $faker) {
     return [
-        'post_id' => function () {
+        'recommendable_id' => function () {
             return factory('ElectricalBlog\Post')->create()->id;
         },
+        'recommendable_type' => 'ElectricalBlog\Post',
         'user_id' => function () {
             return factory('ElectricalBlog\User')->create()->id;
         }
@@ -99,6 +100,7 @@ $factory->define(ElectricalBlog\Book::class, function (Faker $faker) {
         'author' => $faker->name,
         'storage_provider_name' => 'DropBox',
         'book_image' => 'http://electricalblog.test/storage/42104354_2270277199711723_1057977902454276096_n.jpg',
-        'book_link' => 'http://electricalblog.test/storage/42104354_2270277199711723_1057977902454276096_n.jpg'
+        'book_link' => 'http://electricalblog.test/storage/42104354_2270277199711723_1057977902454276096_n.jpg',
+        'review' => $faker->realText($maxNbChars = 10000, $indexSize = 2)
     ];
 });

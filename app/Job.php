@@ -4,11 +4,20 @@ namespace ElectricalBlog;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Yajra\Datatables\Datatables;
+use Kyawnaingtun\Tounicode\TounicodeTrait;
 
 class Job extends Model
 {
     use SoftDeletes;
     protected $dates = ['deleted_at'];
+    use TounicodeTrait;
+
+    /**
+     * These are the attributes to convert before saving.
+     * To covert automatically from Non-Unicode to Unicode fonts
+     * @var array
+     */
+    protected $convertable = ['title', 'body', 'salary'];
 
     public function user()
     {

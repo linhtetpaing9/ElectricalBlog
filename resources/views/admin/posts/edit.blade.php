@@ -27,6 +27,9 @@
           <label for="title">Estimate Reading Time</label>
           <input type="text" class="form-control" name="readable_time" value="{{$post->readable_time}}">
         </div>
+        <div id="app">
+        <file-browser-component></file-browser-component>       
+        </div>
         <div class="form-group">
           <label for="categories">Categories</label>
           <select name="categories[]" class="form-control myclass" multiple="multiple">

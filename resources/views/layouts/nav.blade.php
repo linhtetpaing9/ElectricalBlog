@@ -9,16 +9,19 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="/"> Home</a>
+          <a class="nav-link" href="/"> ပင်မစာမျက်နှာ</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{route('books.book')}}"> Books</a>
+          <a class="nav-link" href="{{route('posts.post')}}"> ပိုစ့်များ</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Electrical Jobs</a>
+          <a class="nav-link" href="{{route('books.book')}}"> စာအုပ်</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Contact</a>
+          <a class="nav-link" href="{{route('jobs.job')}}"> အလုပ်အကိုင်များ</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{route('contacts.contact')}}">ကျွန်တော်တို့အကြောင်း</a>
         </li>
         @if( Auth::check() )
           <li class="nav-item dropdown">

@@ -22,6 +22,11 @@ class JobController extends Controller
         return view('admin.jobs.create', compact('categories'));
     }
 
+    public function show(Job $job)
+    {
+        return view('jobs.show', compact('job'));
+    }
+
     public function edit(Job $job)
     {
         $existJobCategoryId = [];

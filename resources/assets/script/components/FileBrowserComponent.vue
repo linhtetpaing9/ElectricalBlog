@@ -31,7 +31,7 @@
 
 <script>
     export default {
-
+        props: ['image'],
         data() {
             return {
                 showMediaManager: false,
@@ -40,6 +40,9 @@
         },
 
         mounted() {
+                if( this.pageImage == null){
+                    this.pageImage = this.image;
+                }
             window.eventHub.$on('media-manager-selected-editor', (file) => {
                 // Do something with the file info...
                 console.log(file.name);

@@ -4,11 +4,31 @@ namespace ElectricalBlog;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Yajra\Datatables\Datatables;
+use Kyawnaingtun\Tounicode\TounicodeTrait;
 
 class Book extends Model
 {
     use SoftDeletes;
     protected $dates = ['deleted_at'];
+    use TounicodeTrait;
+
+    /**
+     * These are the attributes to convert before saving.
+     * To covert automatically from Non-Unicode to Unicode fonts
+     * @var array
+     */
+    protected $convertable = ['book_name', 'author', 'storage_provider_name', 'review'];
+    
+
+    public function reviews()
+    {
+        return $this->hasOne(Review::class);
+    }
+
+    public function recommends()
+    {
+        return $this->morphMany('ElectricalBlog\Recommend', 'recommendable');
+    }
 
     public function user()
     {
@@ -24,14 +44,7 @@ class Book extends Model
     {
         return Datatables::of($query)
         ->editColumn('image', '<img width="100" height="100" src="{{ $book_image }}"></img>')
-        // ->addColumn("user", function ($query) {
-        //     $data = '<p class="text-info">' . $query->user->name .'</p>';
-        //     return $data;
-        // })
-        ->addColumn("image", function ($query) {
-            $data = '<img width="100" height="100" src="'. $query->book_image .'></img>';
-            return $data;
-        })
+        ->editColumn('book_name', '<a href="{{route("books.show", $id)}}"><p class="text-success"> {{ $book_name }} </p>')
         ->addColumn("created_at", function ($query) {
             $data = '<span class="badge progress-bar-success">' . $query->created_at->diffForHumans() .'</span>';
             return $data;
@@ -44,10 +57,10 @@ class Book extends Model
         //     $data = '<span class="badge progress-bar-danger">' . $query->readable_time .'</span>';
         //     return $data;
         // })
-        // ->addColumn("edit", function ($query) {
-        //     $data = '<a href='. route("posts.edit", $query->id) .' class="btn btn-info text-info"><span class="fa fa-edit"></span></a>';
-        //     return $data;
-        // })
+        ->addColumn("edit", function ($query) {
+            $data = '<a href='. route("books.edit", $query->id) .' class="btn btn-info text-info"><span class="fa fa-edit"></span></a>';
+            return $data;
+        })
         ->addColumn("delete", function ($query) {
             $data = '<form action="' . route('books.destroy', $query->id). '" method="post">'
             . csrf_field() .
@@ -56,7 +69,7 @@ class Book extends Model
         </form>';
             return $data;
         })
-        ->rawColumns(['image', 'book_link', 'created_at', 'delete'])
+        ->rawColumns(['image', 'book_link', 'created_at', 'delete', 'edit', 'book_name'])
         ->toJson();
     }
 

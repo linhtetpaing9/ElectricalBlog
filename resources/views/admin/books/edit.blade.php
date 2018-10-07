@@ -13,42 +13,51 @@
   <div class="col-lg-12" id="app">
     <div class="panel panel-default">
         <div class="panel-heading">
-          Job Edit
+          Book Edit
         </div>
         <div class="panel-body">
-      <form action="{{route('jobs.update', $job->id)}}" id="form-data" method="POST">
-        @method('PATCH')
-        @csrf
-        <div class="form-group">
-          <label for="title">Title</label>
-          <input type="text" class="form-control" name="title" value="{{$job->title}}">
-        </div>
-        <div class="form-group">
-          <label for="salary">Estimate Salary</label>
-          <input type="text" class="form-control" name="salary" value="{{$job->salary}}">
-        </div>
-        <div id="app">
-        <file-browser-component></file-browser-component>       
-        </div>
-        <div class="form-group">
-          <label for="categories">Categories</label>
-          <select name="categories[]" class="form-control myclass" multiple="multiple">
-            @foreach($categories as $key=>$value)
-                @if(array_key_exists($key, $existJobCategoryId))
-                  <option value="{{$key}}" selected>{{$value}}</option>
-                @else
-                  <option value="{{$key}}">{{$value}}</option>
-                @endif
-            @endforeach
-          </select>
-        </div>
-        <div class="form-group">
-          <textarea id="mymce" name="body">{{$job->body}}</textarea>
-        </div>
-          <div class="form-group">
-            <button type="submit" class="btn btn-info">Submit</button>
-          </div>
-      </form>
+          <form action="{{route('books.update', $book->id)}}" id="form-data" method="POST">
+            @method('PATCH')
+            @csrf
+            <div class="form-group">
+              <label for="book_name">Book Name</label>
+              <input type="text" class="form-control" name="book_name" value="{{$book->book_name}}">
+            </div>
+            <div class="form-group">
+              <label for="author">Author</label>
+              <input type="text" class="form-control" name="author" value="{{$book->author}}">
+            </div>
+           <div class="form-group">
+              <label for="book_link">Book Link</label>
+              <input type="text" class="form-control" name="book_link" value="{{$book->book_link}}">
+            </div>
+            <div class="form-group">
+              <label for="categories">Categories</label>
+              <select name="categories[]" class="form-control myclass" multiple="multiple">
+                @foreach($categories as $key=>$value)
+                    @if(array_key_exists($key, $existBookCategoryId))
+                      <option value="{{$key}}" selected>{{$value}}</option>
+                    @else
+                      <option value="{{$key}}">{{$value}}</option>
+                    @endif
+                @endforeach
+              </select>
+            </div>
+
+           <div class="form-group">
+              <label for="storage_provider_name">Storage Provider Name</label>
+              <input type="text" class="form-control" name="storage_provider_name" value="{{$book->storage_provider_name}}">
+            </div>
+            <div id="app">
+            <file-browser-component image="{{$book->book_image}}"></file-browser-component>       
+            </div>
+            <div class="form-group">
+              <textarea id="mymce" name="body">{{$book->review}}</textarea>
+            </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-info">Submit</button>
+              </div>
+          </form>
         </div>
     </div>
   </div>

@@ -15,6 +15,7 @@
     @include('layouts.nav')
 
     @yield('header')
+    {{-- @include('layouts.breadcrumb') --}}
 
     <!-- Main Content -->
     <div class="container">

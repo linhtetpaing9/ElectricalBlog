@@ -28,8 +28,6 @@
   <div class="container">
   <div class="row">
     <div class="col-lg-12">
-      
-
         <table class="display nowrap" style="width:100%" id="dataTables-example">
               <thead>
                   <tr>

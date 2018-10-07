@@ -6,13 +6,13 @@
                 <button class="btn btn-info"><span class="fa fa-search"></span></button>
             </div>
         </div>
-        <div class="post-preview" v-for="post in filteredPosts">
-          <a :href="postUrl + post.id">
-            <h2 class="post-title"> {{ post.title }} </h2>
+        <div class="post-preview" v-for="job in filteredJobs">
+          <a :href="jobUrl + job.id">
+            <h2 class="post-title"> {{ job.title }} </h2>
             <span class="text-success">continue reading</span>
           </a>
           <br>
-            <span class="badge badge-danger" v-for="categories in post.categories" style="margin-left: 5px"><a href="javascript:void(0)" class="text-white" style="text-decoration: none">
+            <span class="badge badge-danger" v-for="categories in job.categories" style="margin-left: 5px"><a href="javascript:void(0)" class="text-white" style="text-decoration: none">
             {{ categories.name }}</a></span>
             
             
@@ -34,27 +34,28 @@ import EventBus from './event-bus.js'
     data(){
       return {
         search: '',
-        posts: [],
+        jobs: [],
         category_id: '',
-        postUrl: '/posts/',
-        jsonUrl: '/api/posts/categories',
+        jobUrl: '/jobs/',
+        jsonUrl: '/api/jobs/categories/',
+        
       }
     },
     created(){
         this.getJson();
               
-        EventBus.$on('setCategory', (category_id) => {
+        EventBus.$on('setCategoryJob', (category_id) => {
           this.category_id = category_id;  
-          console.log('setCategory event caught', this.category_id);
-          axios.get('/categories/'+ this.category_id +'/posts')
-              .then( (response) => this.posts = response.data  )
+          console.log('setCategory job event caught', this.category_id);
+          axios.get('/categories/'+ this.category_id +'/jobs')
+              .then( (response) => this.jobs = response.data  )
               .catch( (error) => console.log(error) );
         });
 
-        EventBus.$on('unsetCategory', () => {
-          console.log('unsetCategory event caught');
+        EventBus.$on('unsetCategoryJob', () => {
+          console.log('unsetCategory job event caught');
           axios.get(this.jsonUrl)
-              .then( (response) => this.posts = response.data  )
+              .then( (response) => this.jobs = response.data  )
               .catch( (error) => console.log(error) );
         });
 
@@ -62,17 +63,26 @@ import EventBus from './event-bus.js'
     methods: {
       getJson(){
         axios.get(this.jsonUrl)
-          .then( (response) => this.posts = response.data  )
-          .then( (response) => EventBus.$emit('allPostCount', this.posts.length) )
+          .then( (response) => this.jobs = response.data  )
+          .then( (response) => EventBus.$emit('allJobCount', this.jobs.length) )
           .catch( (error) => console.log(error) );
       },
+      changeUni2Zg(posts){
+        posts.map(function(job){
+          console.log(Rabbit.uni2zg(job.title));
+          return Rabbit.uni2zg(job.title);
+        });
+        console.log(posts);
+      },
+
     },
     computed: {
-      filteredPosts() {
-        return this.posts.filter(item => {
+      filteredJobs() {
+        return this.jobs.filter(item => {
           return item.title.toLowerCase().includes(Rabbit.zg2uni(this.search).toLowerCase())
         })
       },
+      
     }
   }
 </script>

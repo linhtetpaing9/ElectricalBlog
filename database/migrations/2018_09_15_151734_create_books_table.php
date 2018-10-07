@@ -20,6 +20,7 @@ class CreateBooksTable extends Migration
             $table->string('storage_provider_name');
             $table->string('book_image');
             $table->string('book_link');
+            $table->text('review');
             $table->softDeletes();
             $table->timestamps();
         });

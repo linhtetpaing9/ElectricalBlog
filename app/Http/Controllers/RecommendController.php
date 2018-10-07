@@ -12,13 +12,15 @@ class RecommendController extends Controller
         // dd($request);
         
         if (!$request->recommendable) {
-            $recommend = Recommend::wherePostId((int)$request->post_id)
-                                ->whereUserId($request->user_id)->first();
+            $recommend = Recommend::whereRecommendableId((int)$request->recommendable_id)
+                                ->whereUserId($request->user_id)
+                                ->whereRecommendableType($request->recommendable_type)->first();
             $recommend->delete();
         } else {
             Recommend::UpdateOrCreate([
-            'post_id' => (int)$request->post_id,
+            'recommendable_id' => (int)$request->recommendable_id,
             'user_id' => $request->user_id,
+            'recommendable_type' => $request->recommendable_type,
             ]);
         }
     }

@@ -5,9 +5,9 @@
       
       <span class="badge bg-info" v-for="category in post.categories" :key="category.id + '-label'" v-text="category.name" style="margin-left: 10px"></span>
       <p class="text-danger"> {{ post.recommends_count}} recommended </p>
-      <form @submit.prevent="onSubmitRecommend" 
-            @keydown="form.errors.clear($event.target.name)">
-        <input type="hidden" v-model="formRecommend.post_id = this.post_id">
+      <form @submit.prevent="onSubmitRecommend" v-if="isUserLogin">
+        <input type="hidden" v-model="formRecommend.recommendable_id = this.post_id">
+        <input type="hidden" v-model="formRecommend.recommendable_type = 'ElectricalBlog\\Post'">
         <input type="hidden" v-model="formRecommend.user_id = this.user.id">
         <input type="hidden" v-model="formRecommend.recommendable">
         <button type="submit" @click="recommendOption" :class="recommendSign" v-text="recommendText"></button>
@@ -20,7 +20,7 @@
       <hr>
       <br>
       <h2 class="text-secondary">Questions</h2>
-      <div class="card border mb-5" v-for="issue in post.issues" :key="issue.id">
+      <div class="card border mb-5 boxShadow" v-for="issue in post.issues" :key="issue.id">
         <div class="card-body">
           <div class="post-heading">
             
@@ -65,7 +65,7 @@
             
           </div> 
         </div>
-        <div class="card-body" style="border-top: 1px solid #e3e3e3">
+        <div class="card-body"  style="border-top: 1px solid #e3e3e3">
           <form @submit.prevent="onSubmitReply" 
             @keydown="formReply.errors.clear($event.target.name)">
             <div class="form-body">
@@ -87,7 +87,7 @@
       </div>
 
       <br>
-      <div class="card">
+      <div class="card boxShadow">
         <div class="card-body">
           <div class="container">
             <form @submit.prevent="onSubmit" 
@@ -138,7 +138,8 @@
             issue_id: ''
           }),
           formRecommend: new Form({
-            post_id: '',
+            recommendable_id: '',
+            recommendable_type: 'ElectricalBlog\\Post',
             user_id: '',
             recommendable: ''
           }),
@@ -153,23 +154,31 @@
 
         }
     },
-    created(){
+    mounted(){
         this.getIssue();
         this.getAuthUser();
+
+    },
+    computed: {
+        isUserLogin(){
+          if(this.user == ''){
+            return false;
+          }else{
+            return true;
+          }
+          
+        }
     },
     methods: {
         getIssue() {
           axios.get( '/api/posts/' + this.post_id + '/issues/replies' )
               .then( (response) => this.post = response.data  )
-              .then( (response) => console.log(this.post) )
               .catch( (error) => console.log(error) );
-          console.log(this.post_id);
         },
         getAuthUser(){
-          axios.get( '/admin/users/' )
+          axios.get( '/api/isCurrentUsers/' )
               .then( (response) => this.user = response.data  )
               .then( (response) => this.isCurrentUser(this.post.recommends, this.user))
-              .then( (response) => console.log(this.currentUser))
               .catch( (error) => console.log(error) );
         },
 
@@ -217,9 +226,16 @@
             this.recommendText = 'Recommend';
             this.formRecommend.recommendable = false;
           }
-        }
+        },
+        
     }
 
   }
 </script>
 
+<style scoped>
+  .boxShadow{
+    padding: 15px;
+    box-shadow: 0px 0px 20px -5px grey;
+  }
+</style>

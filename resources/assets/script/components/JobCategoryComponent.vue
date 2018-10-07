@@ -2,16 +2,16 @@
     <div class="card">
       <ul class="list-group list-group-flush" >
         <li class="list-group-item">
-          <a href="javascript:void(0)" style="text-decoration: none" @click="unsetCategoryId()">
+          <a href="javascript:void(0)" style="text-decoration: none" @click="unsetCategoryIdJob()">
             All
           </a>
-        <span class="badge badge-pill badge-danger" v-text="this.posts_count"></span>
+        <span class="badge badge-pill badge-danger" v-text="this.jobs_count"></span>
         </li>
         <li class="list-group-item" v-for="category in this.categories" :key="category.id">
-          <a href="javascript:void(0)" style="text-decoration: none" @click="setCategoryId(category.id)">
+          <a href="javascript:void(0)" style="text-decoration: none" @click="setCategoryIdJob(category.id)">
           {{category.name}}
           </a>
-        <span class="badge badge-pill badge-danger" v-text="category.posts_count"></span>
+        <span class="badge badge-pill badge-danger" v-text="category.jobs_count"></span>
         </li>
       </ul>
     </div> 
@@ -26,26 +26,26 @@
     data(){
       return {
         categories: [],
-        posts_count: 0,
+        jobs_count: 0,
       }
     },
     created(){
-        axios.get('/api/categories/posts')
+        axios.get('/api/categories/jobs')
               .then( (response) => this.categories = response.data  )
               .then( (response) => console.log(this.categories) )
               .catch( (error) => console.log(error) );
 
-        EventBus.$on('allPostCount', (posts_count) => {
-          console.log(posts_count + ' posts');
-          this.posts_count = posts_count;
+        EventBus.$on('allJobCount', (jobs_count) => {
+          console.log(jobs_count + ' jobs');
+          this.jobs_count = jobs_count;
         });
     },
     methods:{
-        setCategoryId(category_id){
-            EventBus.$emit('setCategory', category_id);
+        setCategoryIdJob(category_id){
+            EventBus.$emit('setCategoryJob', category_id);
         },
-        unsetCategoryId(){
-            EventBus.$emit('unsetCategory');
+        unsetCategoryIdJob(){
+            EventBus.$emit('unsetCategoryJob');
         }
     }
 	}

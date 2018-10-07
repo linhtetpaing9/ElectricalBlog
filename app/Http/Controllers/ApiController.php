@@ -17,9 +17,15 @@ class ApiController extends Controller
         return $categories;
     }
 
+    public function countCategoriesByJobs()
+    {
+        $categories = Category::withCount('jobs')->get(['name', 'id']);
+        return $categories;
+    }
+
     public function searchPostsByCategories()
     {
-        return Post::with('categories')->latest()->paginate(5);
+        return Post::with('categories')->latest()->get();
     }
 
     public function postIndex(Post $post)
@@ -27,11 +33,6 @@ class ApiController extends Controller
         return Post::with(['issues.reply', 'categories', 'recommends'])
                     ->withCount('recommends')
                     ->findOrFail($post->id);
-    }
-
-    public function apiIndexPost()
-    {
-        return Post::with('categories')->latest()->get();
     }
 
     public function postDatatable(Request $request)
@@ -59,6 +60,13 @@ class ApiController extends Controller
         return Reply::getDatatableQuery($request);
     }
 
+    public function bookIndex(Book $book)
+    {
+        return Book::with(['categories', 'recommends'])
+                    ->withCount('recommends')
+                    ->findOrFail($book->id);
+    }
+
     public function bookDatatable(Request $request)
     {
         return Book::getDatatableQuery($request);
@@ -77,5 +85,20 @@ class ApiController extends Controller
     public function jobTrashDatatable(Request $request)
     {
         return Job::onlyTrashed()->getTrashDatatableQuery($request);
+    }
+
+    public function searchJobsByCategories()
+    {
+        return Job::with('categories')->latest()->get();
+    }
+
+    public function JobIndex(Job $job)
+    {
+        return Job::with('categories')->findOrFail($job->id);
+    }
+
+    public function categories()
+    {
+        return Category::all();
     }
 }

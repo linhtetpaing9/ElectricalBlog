@@ -21,6 +21,36 @@ class BookController extends Controller
         return view('admin.books.create', compact('categories'));
     }
 
+    public function edit(Book $book)
+    {
+        $existBookCategoryId = [];
+        foreach ($book->categories as $category) {
+            $existBookCategoryId[$category->id] = $category->name;
+        }
+        $categories = Category::pluck('name', 'id');
+        return view('admin.books.edit', compact('book', 'categories', 'existBookCategoryId'));
+    }
+
+    public function show(Book $book)
+    {
+        return view('books.show', compact('book'));
+    }
+
+    public function update(BookRequest $request, Book $book)
+    {
+        flash('Book is edited !')->info()->important();
+        // dd($request);
+        $book->update([
+            'book_name' => $request->book_name,
+            'book_link' => $request->book_link,
+            'book_image' => $request->page_image,
+            'author' => $request->author,
+            'storage_provider_name' => $request->storage_provider_name,
+        ]);
+        $book->categories()->sync($request->categories);
+        return Redirect::route('books.index');
+    }
+
     public function store(BookRequest $request)
     {
         flash('Book is created !')->success()->important();
@@ -61,7 +91,7 @@ class BookController extends Controller
     {
         flash('Book is Permanently Deleted !')->error()->important();
 
-        // dd($post);
+        // dd($book);
         $book->forceDelete();
         return Redirect::route('books.trash');
     }

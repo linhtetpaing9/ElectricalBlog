@@ -20,6 +20,10 @@
         </div>
     <hr>
     <!-- Pager -->
+    <div class="clearfix">
+      <a class="btn btn-primary float-left" v-if="firstPage !== 1" @click="previousPaginate" > Previous</a>
+      <a class="btn btn-primary float-right" v-if="currentPage !== checkLastPage" @click="nextPaginate" >Next</a>
+    </div>
     </div>
 </template>
 
@@ -37,7 +41,13 @@ import EventBus from './event-bus.js'
         posts: [],
         category_id: '',
         postUrl: '/posts/',
-        jsonUrl: '/api/posts/categories',
+        categoryUrl: '/categories/',
+        paginate: {},
+        jsonUrl: '/api/categories/posts',
+        firstPage: '',
+        currentPage: '',
+        total: '',
+        perPage: '',
       }
     },
     created(){
@@ -54,25 +64,52 @@ import EventBus from './event-bus.js'
         EventBus.$on('unsetCategory', () => {
           console.log('unsetCategory event caught');
           axios.get(this.jsonUrl)
-              .then( (response) => this.posts = response.data  )
+              .then( (response) => this.paginate = response.data  )
+              .then( (response) => this.posts = this.paginate.data  )
               .catch( (error) => console.log(error) );
         });
 
     },
     methods: {
+      nextPaginate(){
+        this.jsonUrl = this.paginate.next_page_url;
+        this.getJson();
+        // console.log(this.jsonUrl);
+      },
+      previousPaginate(){
+        this.jsonUrl = this.paginate.prev_page_url;
+        this.getJson();
+        // console.log(this.jsonUrl);
+      },
       getJson(){
         axios.get(this.jsonUrl)
-          .then( (response) => this.posts = response.data  )
+          .then( (response) => this.paginate = response.data  )
+          .then( (response) => this.posts = this.paginate.data  )
+          .then( (response) => this.firstPage = this.paginate.from  )
+          .then( (response) => this.currentPage = this.paginate.current_page  )
+          .then( (response) => this.total = this.paginate.total  )
+          .then( (response) => this.perPage = this.paginate.per_page  )
+          .then( (response) => console.log(this.paginate)  )
           .then( (response) => EventBus.$emit('allPostCount', this.posts.length) )
           .catch( (error) => console.log(error) );
       },
+      isFloat(n){
+        return Number(n) === n && n % 1 !== 0;
+      }
     },
     computed: {
       filteredPosts() {
         return this.posts.filter(item => {
-          return item.title.toLowerCase().includes(Rabbit.zg2uni(this.search).toLowerCase())
+          return item.title.toLowerCase().includes(this.search.toLowerCase())
         })
       },
+      checkLastPage(){
+        var checkPage = this.total / this.perPage;
+        if( this.isFloat (checkPage)){
+          return ~~checkPage + 1;
+        }
+        return checkPage;        
+      }
     }
   }
 </script>

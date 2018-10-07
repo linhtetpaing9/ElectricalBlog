@@ -13,11 +13,18 @@
 */
 
 Route::get('/', 'PageController@home');
+Route::get('/contact', 'PageController@contact')->name('contacts.contact');
 Route::get('/books', 'PageController@book')->name('books.book');
+Route::get('/posts', 'PageController@post')->name('posts.post');
+Route::get('/jobs', 'PageController@job')->name('jobs.job');
+Route::get('/videos', 'PageController@video')->name('videos.video');
 
 Route::get('/posts/{post}', 'PostController@show')->name('posts.show');
+Route::get('/books/{book}', 'BookController@show')->name('books.show');
+Route::get('/jobs/{job}', 'JobController@show')->name('jobs.show');
 
 Route::get('/categories/{category}/posts', 'PostCategoryController@show');
+Route::get('/categories/{category}/jobs', 'JobCategoryController@show');
 
 
 
@@ -42,9 +49,8 @@ Route::prefix('admin')->group(function () {
         'PostController@forceDelete'
     )->name('posts.forceDelete');
 
-    Route::resource('/posts', 'PostController')->except(['show', 'edit']);
+    Route::resource('/posts', 'PostController')->except(['show']);
 
-    Route::get('/posts/{post}', 'PostController@edit')->name('posts.edit');
 
     //Issue
     Route::get('/issues/trash', 'IssueController@trash')->name('issues.trash');
@@ -78,7 +84,7 @@ Route::prefix('admin')->group(function () {
         'BookController@forceDelete'
     )->name('books.forceDelete');
 
-    Route::resource('/books', 'BookController');
+    Route::resource('/books', 'BookController')->except(['show']);
 
     //Job
     Route::get('jobs/trash', 'JobController@trash')->name('jobs.trash');
@@ -93,41 +99,52 @@ Route::prefix('admin')->group(function () {
         'JobController@forceDelete'
     )->name('jobs.forceDelete');
 
-    Route::resource('/jobs', 'JobController');
+    Route::resource('/jobs', 'JobController')->except(['show']);
 
     //Reply
     Route::resource('/replies', 'ReplyController');
 
     //Recommend
     Route::post('/recommends', 'RecommendController@store')->name('recommends.store');
-
-    //User
-    Route::get('/users', function () {
-        return Auth::user();
-    });
 });
 
 
 Route::prefix('api')->group(function () {
+    //Post
     Route::get('/posts/datatable', 'ApiController@postDatatable')
     ->name('api.posts.datatable');
     Route::get('/posts/trash/datatable', 'ApiController@postTrashDatatable')
     ->name('api.posts.trash.datatable');
+    Route::get('/posts/{post}/issues/replies', 'ApiController@postIndex');
+    Route::get('/posts/categories', 'ApiController@searchPostsByCategories');
+
+    //Issue
     Route::get('/issues/datatable', 'ApiController@IssueDatatable')
     ->name('api.issues.datatable');
     Route::get('/issues/trash/datatable', 'ApiController@IssueTrashDatatable')
     ->name('api.issues.trash.datatable');
-    Route::get('/categories/posts', 'ApiController@searchPostsByCategories');
-    Route::get('/categories', 'ApiController@countCategoriesByPosts');
-    Route::get('/posts/{post}/issues/replies', 'ApiController@postIndex');
+    //Category
+    Route::get('/categories/posts', 'ApiController@countCategoriesByPosts');
+    Route::get('/categories/jobs', 'ApiController@countCategoriesByJobs');
+    Route::get('/categories', 'ApiController@categories');
+
+    //Book
     Route::get('/books/datatable', 'ApiController@bookDatatable')
     ->name('api.books.datatable');
     Route::get('/books/trash/datatable', 'ApiController@BookTrashDatatable')
     ->name('api.books.trash.datatable');
+    Route::get('/books/{book}', 'ApiController@bookIndex');
+    //Job
     Route::get('/jobs/datatable', 'ApiController@jobDatatable')
     ->name('api.jobs.datatable');
     Route::get('/jobs/trash/datatable', 'ApiController@JobTrashDatatable')
     ->name('api.jobs.trash.datatable');
+    Route::get('/jobs/categories', 'ApiController@searchjobsByCategories');
+    Route::get('/jobs/{job}', 'ApiController@jobIndex');
+    //User
+    Route::get('/isCurrentUsers', function () {
+        return Auth::user();
+    });
 });
 
 // Authentication Routes...

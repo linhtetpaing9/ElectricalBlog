@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a37030531ae5215b6fa3b984d319ee7a",
+    "content-hash": "a0c33c4a310f260a0601bb3fea58684e",
     "packages": [
         {
             "name": "dflydev/apache-mime-types",
@@ -700,6 +700,46 @@
                 "tokenizer"
             ],
             "time": "2018-03-21T22:21:57+00:00"
+        },
+        {
+            "name": "kyawnaingtun/tounicode",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KyawNaingTun/tounicode.git",
+                "reference": "b7c37ccaa3d20e6800dbd2a6776975458ba79f89"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KyawNaingTun/tounicode/zipball/b7c37ccaa3d20e6800dbd2a6776975458ba79f89",
+                "reference": "b7c37ccaa3d20e6800dbd2a6776975458ba79f89",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Kyawnaingtun\\Tounicode\\": "src"
+                },
+                "files": [
+                    "src/convert-helper.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kyaw Naing Tun",
+                    "email": "kyawnainghtun93@gmail.com"
+                }
+            ],
+            "description": "\"Laravel zawgyi to unicode converter\"",
+            "homepage": "https://github.com/KyawNaingTun/tounicode",
+            "time": "2018-08-13T06:37:06+00:00"
         },
         {
             "name": "laracasts/flash",
@@ -5599,7 +5639,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "kyawnaingtun/tounicode": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

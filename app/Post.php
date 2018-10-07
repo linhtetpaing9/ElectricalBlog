@@ -5,11 +5,20 @@ namespace ElectricalBlog;
 use ElectricalBlog\Recommend;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Yajra\Datatables\Datatables;
+use Kyawnaingtun\Tounicode\TounicodeTrait;
 
 class Post extends Model
 {
     use SoftDeletes;
     protected $dates = ['deleted_at'];
+    use TounicodeTrait;
+
+    /**
+     * These are the attributes to convert before saving.
+     * To covert automatically from Non-Unicode to Unicode fonts
+     * @var array
+     */
+    protected $convertable = ['title', 'body', 'readable_time'];
 
     public function user()
     {
@@ -23,7 +32,7 @@ class Post extends Model
 
     public function recommends()
     {
-        return $this->hasMany(Recommend::class);
+        return $this->morphMany('ElectricalBlog\Recommend', 'recommendable');
     }
     
     public function issues()

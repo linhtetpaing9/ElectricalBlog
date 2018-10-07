@@ -15,9 +15,10 @@ class CreateRecommendsTable extends Migration
     {
         Schema::create('recommends', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('post_id');
+            $table->string('recommendable_type');
+            $table->integer('recommendable_id');
             $table->integer('user_id');
-            $table->unique(['post_id', 'user_id']);
+            $table->unique(['recommendable_id', 'user_id']);
             $table->timestamps();
         });
     }

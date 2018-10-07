@@ -24,6 +24,7 @@
                       <th>Created At</th>
                       <th>Image</th>
                       <th></th>
+                      <th></th>
                   </tr>
               </thead>
               <tbody>
@@ -56,6 +57,7 @@
             { data: 'book_link', name: 'book_link' }, 
             { data: 'created_at', name: 'created_at' }, 
             { data: 'image', name: 'image' }, 
+            { data: 'edit', name: 'edit' }, 
             { data: 'delete', name: 'delete' }, 
             ],
             "columnDefs": [
