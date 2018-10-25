@@ -11,11 +11,11 @@
   </head>
 
   <body>
-
+    
     @include('layouts.nav')
 
-    @yield('header')
 
+    @yield('header')
     <!-- Main Content -->
     <div class="container">
       <div class="row">
@@ -31,6 +31,7 @@
     @include('layouts.footer')
    
     @include('layouts.script')
+    <a href="#" class="scrollToTop"><span class="fa fa-arrow-up"></span></a>
 
   </body>
 

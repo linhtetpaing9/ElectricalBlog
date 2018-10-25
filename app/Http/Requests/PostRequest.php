@@ -26,8 +26,6 @@ class PostRequest extends FormRequest
         return [
             'title' => '',
             'body' => '',
-            'header' => '',
-            'footer' => '',
         ];
     }
 }

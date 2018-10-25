@@ -22,6 +22,7 @@ class CreateIssuesTable extends Migration
             $table->boolean('is_solved')->default(false);
             $table->integer('agree_points')->default(0);
             $table->integer('disagree_points')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
