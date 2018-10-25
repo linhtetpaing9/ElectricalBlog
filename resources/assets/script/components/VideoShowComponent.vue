@@ -52,7 +52,6 @@ var myanmarNumbers = require("myanmar-numbers");
     },
     mounted(){
         this.getVideo();
-        this.getAuthUser();
     },
     filters: {
       myanmarNumber(value) {
@@ -73,17 +72,17 @@ var myanmarNumbers = require("myanmar-numbers");
     methods: {
         getVideo() {
           axios.get( '/api/videos/' + this.video_id  )
-              .then( (response) => this.video = response.data  )
-              .then( (response) => console.log(this.video) )
+              .then( (response) => {
+                this.video = response.data
+                axios.get( '/api/isCurrentUsers/' )
+                    .then( (response) => this.user = response.data  )
+                    .then( (response) => this.isCurrentUser(this.video.recommends, this.user))
+                    .then( (response) => console.log(this.currentUser))
+                    .catch( (error) => console.log(error) );
+              })
               .catch( (error) => console.log(error) );
         },
-        getAuthUser(){
-          axios.get( '/api/isCurrentUsers/' )
-              .then( (response) => this.user = response.data  )
-              .then( (response) => this.isCurrentUser(this.video.recommends, this.user))
-              .then( (response) => console.log(this.currentUser))
-              .catch( (error) => console.log(error) );
-        },
+        
         onSubmitRecommend(){
             this.formRecommend.post('/admin/recommends')
                     .then( response => this.getVideo());

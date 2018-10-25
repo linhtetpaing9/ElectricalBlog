@@ -46,6 +46,7 @@ class BookController extends Controller
             'book_image' => $request->page_image,
             'author' => $request->author,
             'storage_provider_name' => $request->storage_provider_name,
+            'review' => $request->review,
         ]);
         $book->categories()->sync($request->categories);
         return Redirect::route('books.index');
@@ -61,6 +62,7 @@ class BookController extends Controller
             'book_image' => $request->page_image,
             'author' => $request->author,
             'storage_provider_name' => $request->storage_provider_name,
+            'review' => $request->review,
         ]);
         $book->categories()->sync($request->categories);
         return Redirect::route('books.index');

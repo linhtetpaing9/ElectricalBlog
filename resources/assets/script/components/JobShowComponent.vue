@@ -42,7 +42,6 @@ var myanmarNumbers = require("myanmar-numbers");
     },
     mounted(){
         this.getJob();
-        this.getAuthUser();
     },
     filters: {
       myanmarNumber(value) {
@@ -63,13 +62,13 @@ var myanmarNumbers = require("myanmar-numbers");
     methods: {
         getJob() {
           axios.get( '/api/jobs/' + this.job_id  )
-              .then( (response) => this.job = response.data  )
-              .catch( (error) => console.log(error) );
-        },
-        getAuthUser(){
-          axios.get( '/api/isCurrentUsers/' )
-              .then( (response) => this.user = response.data  )
-              .then( (response) => this.isCurrentUser(this.job.recommends, this.user))
+              .then( (response) => {
+                this.job = response.data;
+                axios.get( '/api/isCurrentUsers/' )
+                    .then( (response) => this.user = response.data  )
+                    .then( (response) => this.isCurrentUser(this.job.recommends, this.user))
+                    .catch( (error) => console.log(error) );
+              })
               .catch( (error) => console.log(error) );
         },
         onSubmitRecommend(){

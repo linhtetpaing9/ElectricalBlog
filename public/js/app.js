@@ -21791,7 +21791,6 @@ var myanmarNumbers = __webpack_require__(2);
   },
   mounted: function mounted() {
     this.getIssue();
-    this.getAuthUser();
   },
 
   computed: {
@@ -21814,18 +21813,14 @@ var myanmarNumbers = __webpack_require__(2);
       var _this = this;
 
       axios.get('/api/posts/' + this.post_id + '/issues/replies').then(function (response) {
-        return _this.post = response.data;
-      }).catch(function (error) {
-        return console.log(error);
-      });
-    },
-    getAuthUser: function getAuthUser() {
-      var _this2 = this;
-
-      axios.get('/api/isCurrentUsers/').then(function (response) {
-        return _this2.user = response.data;
-      }).then(function (response) {
-        return _this2.isCurrentUser(_this2.post.recommends, _this2.user);
+        _this.post = response.data;
+        axios.get('/api/isCurrentUsers/').then(function (response) {
+          return _this.user = response.data;
+        }).then(function (response) {
+          return _this.isCurrentUser(_this.post.recommends, _this.user);
+        }).catch(function (error) {
+          return console.log(error);
+        });
       }).catch(function (error) {
         return console.log(error);
       });
@@ -21834,39 +21829,39 @@ var myanmarNumbers = __webpack_require__(2);
       this.formReply.body = reply;
     },
     onSubmit: function onSubmit() {
-      var _this3 = this;
+      var _this2 = this;
 
       this.form.post('/admin/posts/' + this.post_id + '/issues').then(function (response) {
-        return _this3.getIssue();
+        return _this2.getIssue();
       });
     },
     onSubmitReply: function onSubmitReply(event) {
-      var _this4 = this;
+      var _this3 = this;
 
       this.formReply.post('/admin/replies').then(function (response) {
-        return _this4.getIssue();
+        return _this3.getIssue();
       });
       event.target.reset();
     },
     onSubmitRecommend: function onSubmitRecommend() {
-      var _this5 = this;
+      var _this4 = this;
 
       this.formRecommend.post('/admin/recommends').then(function (response) {
-        return _this5.getIssue();
+        return _this4.getIssue();
       });
     },
     onDeleteIssue: function onDeleteIssue(issue_id) {
-      var _this6 = this;
+      var _this5 = this;
 
       axios.delete('/posts/' + this.post_id + '/issues/' + issue_id).then(function (response) {
-        return _this6.getIssue();
+        return _this5.getIssue();
       });
     },
     onDeleteReply: function onDeleteReply(issue_id, reply_id) {
-      var _this7 = this;
+      var _this6 = this;
 
       axios.delete('/posts/' + this.post_id + '/issues/' + issue_id + '/replies/' + reply_id).then(function (response) {
-        return _this7.getIssue();
+        return _this6.getIssue();
       });
     },
     isCurrentUser: function isCurrentUser(recommends, user) {
@@ -22640,7 +22635,6 @@ var myanmarNumbers = __webpack_require__(2);
   },
   mounted: function mounted() {
     this.getBook();
-    this.getAuthUser();
   },
 
   computed: {
@@ -22663,31 +22657,27 @@ var myanmarNumbers = __webpack_require__(2);
       var _this = this;
 
       axios.get('/api/books/' + this.book_id).then(function (response) {
-        return _this.book = response.data;
+        _this.book = response.data;
+        axios.get('/api/isCurrentUsers/').then(function (response) {
+          return _this.user = response.data;
+        }).then(function (response) {
+          return _this.isCurrentUser(_this.book.recommends, _this.user);
+        }).then(function (response) {
+          return console.log(_this.currentUser);
+        }).catch(function (error) {
+          return console.log(error);
+        });
       }).then(function (response) {
         return console.log(_this.book);
       }).catch(function (error) {
         return console.log(error);
       });
     },
-    getAuthUser: function getAuthUser() {
+    onSubmitRecommend: function onSubmitRecommend() {
       var _this2 = this;
 
-      axios.get('/api/isCurrentUsers/').then(function (response) {
-        return _this2.user = response.data;
-      }).then(function (response) {
-        return _this2.isCurrentUser(_this2.book.recommends, _this2.user);
-      }).then(function (response) {
-        return console.log(_this2.currentUser);
-      }).catch(function (error) {
-        return console.log(error);
-      });
-    },
-    onSubmitRecommend: function onSubmitRecommend() {
-      var _this3 = this;
-
       this.formRecommend.post('/admin/recommends').then(function (response) {
-        return _this3.getBook();
+        return _this2.getBook();
       });
     },
     isCurrentUser: function isCurrentUser(recommends, user) {
@@ -23098,7 +23088,6 @@ var myanmarNumbers = __webpack_require__(2);
   },
   mounted: function mounted() {
     this.getJob();
-    this.getAuthUser();
   },
 
   filters: {
@@ -23121,27 +23110,23 @@ var myanmarNumbers = __webpack_require__(2);
       var _this = this;
 
       axios.get('/api/jobs/' + this.job_id).then(function (response) {
-        return _this.job = response.data;
-      }).catch(function (error) {
-        return console.log(error);
-      });
-    },
-    getAuthUser: function getAuthUser() {
-      var _this2 = this;
-
-      axios.get('/api/isCurrentUsers/').then(function (response) {
-        return _this2.user = response.data;
-      }).then(function (response) {
-        return _this2.isCurrentUser(_this2.job.recommends, _this2.user);
+        _this.job = response.data;
+        axios.get('/api/isCurrentUsers/').then(function (response) {
+          return _this.user = response.data;
+        }).then(function (response) {
+          return _this.isCurrentUser(_this.job.recommends, _this.user);
+        }).catch(function (error) {
+          return console.log(error);
+        });
       }).catch(function (error) {
         return console.log(error);
       });
     },
     onSubmitRecommend: function onSubmitRecommend() {
-      var _this3 = this;
+      var _this2 = this;
 
       this.formRecommend.post('/admin/recommends').then(function (response) {
-        return _this3.getJob();
+        return _this2.getJob();
       });
     },
     isCurrentUser: function isCurrentUser(recommends, user) {
@@ -23511,7 +23496,6 @@ var myanmarNumbers = __webpack_require__(2);
   },
   mounted: function mounted() {
     this.getVideo();
-    this.getAuthUser();
   },
 
   filters: {
@@ -23534,31 +23518,25 @@ var myanmarNumbers = __webpack_require__(2);
       var _this = this;
 
       axios.get('/api/videos/' + this.video_id).then(function (response) {
-        return _this.video = response.data;
-      }).then(function (response) {
-        return console.log(_this.video);
-      }).catch(function (error) {
-        return console.log(error);
-      });
-    },
-    getAuthUser: function getAuthUser() {
-      var _this2 = this;
-
-      axios.get('/api/isCurrentUsers/').then(function (response) {
-        return _this2.user = response.data;
-      }).then(function (response) {
-        return _this2.isCurrentUser(_this2.video.recommends, _this2.user);
-      }).then(function (response) {
-        return console.log(_this2.currentUser);
+        _this.video = response.data;
+        axios.get('/api/isCurrentUsers/').then(function (response) {
+          return _this.user = response.data;
+        }).then(function (response) {
+          return _this.isCurrentUser(_this.video.recommends, _this.user);
+        }).then(function (response) {
+          return console.log(_this.currentUser);
+        }).catch(function (error) {
+          return console.log(error);
+        });
       }).catch(function (error) {
         return console.log(error);
       });
     },
     onSubmitRecommend: function onSubmitRecommend() {
-      var _this3 = this;
+      var _this2 = this;
 
       this.formRecommend.post('/admin/recommends').then(function (response) {
-        return _this3.getVideo();
+        return _this2.getVideo();
       });
     },
     isCurrentUser: function isCurrentUser(recommends, user) {

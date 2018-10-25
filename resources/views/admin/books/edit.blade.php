@@ -15,7 +15,10 @@
         <div class="panel-heading">
           Book Edit
         </div>
-        <div class="panel-body">
+        <div class="panel-body"><div class="form-group">
+          <textarea id="mymce" name="review" ></textarea>
+          {{-- <input type="text" name="body" style="display: none"> --}}
+        </div>
           <form action="{{route('books.update', $book->id)}}" id="form-data" method="POST">
             @method('PATCH')
             @csrf
@@ -52,7 +55,7 @@
             <file-browser-component image="{{$book->book_image}}"></file-browser-component>       
             </div>
             <div class="form-group">
-              <textarea id="mymce" name="body">{{$book->review}}</textarea>
+              <textarea id="mymce" name="review">{{$book->review}}</textarea>
             </div>
               <div class="form-group">
                 <button type="submit" class="btn btn-info">Submit</button>

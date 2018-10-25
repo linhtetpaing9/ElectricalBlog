@@ -58,7 +58,6 @@
     },
     mounted(){
         this.getBook();
-        this.getAuthUser();
     },
     computed: {
         isUserLogin(){
@@ -79,17 +78,18 @@
     methods: {
         getBook() {
           axios.get( '/api/books/' + this.book_id  )
-              .then( (response) => this.book = response.data  )
+              .then( (response) => {
+                this.book = response.data;
+                axios.get( '/api/isCurrentUsers/' )
+                    .then( (response) => this.user = response.data  )
+                    .then( (response) => this.isCurrentUser(this.book.recommends, this.user))
+                    .then( (response) => console.log(this.currentUser))
+                    .catch( (error) => console.log(error) );
+              })
               .then( (response) => console.log(this.book) )
               .catch( (error) => console.log(error) );
         },
-        getAuthUser(){
-          axios.get( '/api/isCurrentUsers/' )
-              .then( (response) => this.user = response.data  )
-              .then( (response) => this.isCurrentUser(this.book.recommends, this.user))
-              .then( (response) => console.log(this.currentUser))
-              .catch( (error) => console.log(error) );
-        },
+      
         onSubmitRecommend(){
             this.formRecommend.post('/admin/recommends')
                     .then( response => this.getBook());

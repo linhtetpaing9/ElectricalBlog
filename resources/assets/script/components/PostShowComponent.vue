@@ -157,8 +157,6 @@
     },
     mounted(){
         this.getIssue();
-        this.getAuthUser();
-
     },
     computed: {
         isUserLogin(){
@@ -179,15 +177,16 @@
     methods: {
         getIssue() {
           axios.get( '/api/posts/' + this.post_id + '/issues/replies' )
-              .then( (response) => this.post = response.data  )
+              .then( (response) => {
+                this.post = response.data
+                axios.get( '/api/isCurrentUsers/' )
+                    .then( (response) => this.user = response.data  )
+                    .then( (response) => this.isCurrentUser(this.post.recommends, this.user))
+                    .catch( (error) => console.log(error) );
+              })
               .catch( (error) => console.log(error) );
         },
-        getAuthUser(){
-          axios.get( '/api/isCurrentUsers/' )
-              .then( (response) => this.user = response.data  )
-              .then( (response) => this.isCurrentUser(this.post.recommends, this.user))
-              .catch( (error) => console.log(error) );
-        },
+        
         updateFormReply(reply){
           this.formReply.body = reply;
         },
