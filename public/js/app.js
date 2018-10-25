@@ -21754,6 +21754,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 var myanmarNumbers = __webpack_require__(2);
 
@@ -21921,6 +21924,10 @@ var render = function() {
           domProps: { textContent: _vm._s(category.name) }
         })
       }),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("br"),
       _vm._v(" "),
       _c("span", { staticClass: "badge bg-danger text-white" }, [
         _vm._v(_vm._s(_vm._f("myanmarNumber")(_vm.post.recommends_count)))
