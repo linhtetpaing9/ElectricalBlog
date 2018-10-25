@@ -4,7 +4,10 @@
       
       
       <span class="badge bg-info" v-for="category in post.categories" :key="category.id + '-label'" v-text="category.name" style="margin-left: 10px"></span>
+      <br>
+      <br>
       <span class="badge bg-danger text-white" >{{post.recommends_count | myanmarNumber}}</span> recommended </p>
+
       <form @submit.prevent="onSubmitRecommend" v-if="isUserLogin">
         <input type="hidden" v-model="formRecommend.recommendable_id = this.post_id">
         <input type="hidden" v-model="formRecommend.recommendable_type = 'ElectricalBlog\\Post'">
