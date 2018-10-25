@@ -553,6 +553,23 @@ pre code {
   margin-right: auto;
   margin-left: auto;
 }
+@media (min-width: 425px) {
+  .container {
+    max-width: 375px;
+  }
+}
+
+@media (min-width: 375px) {
+  .container {
+    max-width: 320px;
+  }
+}
+
+@media (min-width: 320px) {
+  .container {
+    max-width: 370px;
+  }
+}
 
 @media (min-width: 576px) {
   .container {
@@ -572,11 +589,7 @@ pre code {
   }
 }
 
-@media (min-width: 1200px) {
-  .container {
-    max-width: 1140px;
-  }
-}
+
 
 .container-fluid {
   width: 100%;

@@ -13,7 +13,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'ElectricalBlog\Model' => 'ElectricalBlog\Policies\ModelPolicy',
+        'ElectricalBlog\Post' => 'ElectricalBlog\Policies\PostPolicy',
+        'ElectricalBlog\Job' => 'ElectricalBlog\Policies\JobPolicy',
+        'ElectricalBlog\Video' => 'ElectricalBlog\Policies\VideoPolicy',
     ];
 
     /**
@@ -24,7 +26,8 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        //
+        Gate::resource('posts', 'ElectricalBlog\Policies\PostPolicy');
+        Gate::resource('videos', 'ElectricalBlog\Policies\VideoPolicy');
+        Gate::resource('jobs', 'ElectricalBlog\Policies\JobPolicy');
     }
 }

@@ -5,12 +5,20 @@ namespace ElectricalBlog\Filters;
 class PostFilters extends Filters
 {
     protected $filters = [
-        'category_id'
+        'title'
     ];
-
-    public function category_id($category_id)
+    
+    public function title($title)
     {
-        return $this->builder->where('category_id', '=', $category_id);
-        // dd($this->builder);
+        // dd($title);
+        $keywords = preg_split("/[\s,]+/", tounicode($title));
+        // dd($keywords);
+        return $this->builder->where(function ($query) use ($keywords) {
+            // dd($query);
+            foreach ($keywords as $keyword) {
+                // dd($keyword);
+                $query->where('title', 'LIKE', "%{$keyword}%");
+            }
+        });
     }
 }

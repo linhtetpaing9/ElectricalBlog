@@ -23,10 +23,12 @@
 
 @section('content')
 <div id="app" class="row">
-  <div class="col-lg-8 col-md-10">
-      <post-searching-component></post-searching-component>
+  <div class="col-lg-8 col-md-9">
+      <h1 class="text-info" style="text-align: center;">စုစုပေါင်း {{numformat($posts_count)}} ပိုစ့်</h1>
+
+      <post-searching-component ></post-searching-component>
   </div>
-  <div class="col-lg-4 col-md-2">
+  <div class="col-lg-4 col-md-3 mx-auto">
       <post-category-component></post-category-component>
   </div>
 </div>
@@ -36,5 +38,5 @@
 
 @section('script')
  <script src="{{ asset('js/app.js') }}" defer></script>
-
+<script src="https://unpkg.com/rabbit-node@1.0.3/dist/rabbit.min.js"></script>
 @endsection
