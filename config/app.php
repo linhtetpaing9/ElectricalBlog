@@ -151,6 +151,7 @@ return [
          * Package Service Providers...
          */
         \TalvBansal\MediaManager\Providers\MediaManagerServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -209,6 +210,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Str'   => Illuminate\Support\Str::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
     ],
 

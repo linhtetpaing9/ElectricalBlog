@@ -23,12 +23,12 @@
 
 @section('content')
 <div id="app" class="row">
-  <div class="col-lg-8 col-md-10">
-      <h1 class="text-info" style="text-align: center;">စုစုပေါင်း {{numformat($post_count)}} ပိုစ့်</h1>
+  <div class="col-lg-8 col-md-9">
+      <h1 class="text-info" style="text-align: center;">စုစုပေါင်း {{numformat($posts_count)}} ပိုစ့်</h1>
 
       <post-searching-component ></post-searching-component>
   </div>
-  <div class="col-lg-4 col-md-2 mx-auto">
+  <div class="col-lg-4 col-md-3 mx-auto">
       <post-category-component></post-category-component>
   </div>
 </div>

@@ -41,18 +41,23 @@
                                 <div class="form-group">
                                     <input class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="Password" name="password" type="password" required>
                                     @if ($errors->has('password'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('password') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Password Confirmation" name="password_confirmation" type="password">
                                 </div>
-                                <div class="form-group row">
+                                <div class="form-group row  {{ $errors->has('avatar') ? ' is-invalid' : '' }}">
                                     <div class="col-md-12">
                                         <input id="avatar" type="file" class="form-control" name="avatar">
                                     </div>
+                                    @if ($errors->has('avatar'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('avatar') }}</strong>
+                                    </span>
+                                @endif
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
                                 <div class="form-submit">

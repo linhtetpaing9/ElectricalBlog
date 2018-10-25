@@ -26,9 +26,13 @@
 
 <div class="col-lg-10 col-md-12 mx-auto">
   <article>
+    @if(Auth::check())
+      @if(Auth::user()->is_admin)
     <div class="row">
       <a href="{{route('jobs.edit', $job->id)}}" class="btn btn-info text-white"><i class="fa fa-edit">Edit Job</i></a>
     </div>
+      @endif
+    @endif
       <div id="app">
           <job-show-component></job-show-component>
       </div>

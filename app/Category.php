@@ -29,4 +29,9 @@ class Category extends Model
     {
         return $this->belongsToMany(Job::class, 'job_categories');
     }
+
+    public function videos()
+    {
+        return $this->belongsToMany(Video::class, 'video_categories');
+    }
 }

@@ -18,6 +18,11 @@
         return false;
     });
 
+    setTimeout(function(){
+        $('.load').addClass('hidden');
+    }, 1000);
+ 
+
 });
 </script>
  @yield('script')

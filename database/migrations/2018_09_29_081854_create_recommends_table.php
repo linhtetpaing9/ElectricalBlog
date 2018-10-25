@@ -18,7 +18,6 @@ class CreateRecommendsTable extends Migration
             $table->string('recommendable_type');
             $table->integer('recommendable_id');
             $table->integer('user_id');
-            $table->unique(['recommendable_id', 'user_id']);
             $table->timestamps();
         });
     }

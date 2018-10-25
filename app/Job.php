@@ -11,6 +11,7 @@ class Job extends Model
     use SoftDeletes;
     protected $dates = ['deleted_at'];
     use TounicodeTrait;
+    protected $withCount = ['recommends'];
 
     /**
      * These are the attributes to convert before saving.
@@ -22,6 +23,11 @@ class Job extends Model
     public function user()
     {
         return $this->belongsTo(User::class)->withDefault();
+    }
+
+    public function recommends()
+    {
+        return $this->morphMany('ElectricalBlog\Recommend', 'recommendable');
     }
 
     public function categories()

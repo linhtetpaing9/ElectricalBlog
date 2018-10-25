@@ -8,6 +8,7 @@ use ElectricalBlog\Job;
 use ElectricalBlog\Post;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use ElectricalBlog\Video;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -44,6 +45,10 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('trashed_job', function ($id) {
             return Job::onlyTrashed()->findOrFail($id);
+        });
+
+        Route::bind('trashed_video', function ($id) {
+            return Video::onlyTrashed()->findOrFail($id);
         });
     }
 

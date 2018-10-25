@@ -23,11 +23,11 @@
 
 @section('content')
 <div id="app" class="row">
-  <div class="col-lg-8 col-md-10">
+  <div class="col-lg-8 col-md-9">
     <h1 class="text-info" style="text-align: center;">စုစုပေါင်း {{numformat($jobs_count)}} အလုပ်အကိုင်</h1>
       <job-searching-component></job-searching-component>
   </div>
-  <div class="col-lg-4 col-md-2 mx-auto">
+  <div class="col-lg-4 col-md-3 mx-auto">
       <job-category-component></job-category-component>
   </div>
 </div>

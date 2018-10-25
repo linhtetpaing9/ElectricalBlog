@@ -11,6 +11,7 @@
         <div class="post-preview" v-for="post in posts">
           <a :href="postUrl + post.id">
             <h2 class="post-title"> {{ post.title }} </h2>
+            <span class="badge bg-danger text-white" >{{post.recommends_count | myanmarNumber}}</span> recommended </p>
             <span class="text-success">continue reading</span>
           </a>
           <br>

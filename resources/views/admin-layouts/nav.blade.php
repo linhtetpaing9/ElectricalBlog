@@ -46,6 +46,19 @@
                             <!-- /input-group -->
                         </li>
                         <li>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i> User & Roles<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                <a href="{{route('roles.index')}}">Roles</a>
+                                </li>
+                                <li>
+                                <a href="{{route('roles.create')}}">Roles Create</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+
+                        <li>
                             <a href="#"><i class="fa fa-sticky-note fa-fw"></i> Posts<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
@@ -70,6 +83,18 @@
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
+                            <a href="#"><i class="fab fa-video fa-fw"></i> Videos<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                <a href="{{route('videos.index')}}">All Videos</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('videos.create')}}">Create</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
                             <a href="#"><i class="fa fa-tasks fa-fw"></i> Jobs<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
@@ -86,6 +111,15 @@
                             <ul class="nav nav-second-level">
                                 <li>
                                 <a href="{{route('categories.index')}}">All Categories</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i> FeedBack<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                <a href="{{route('feedbacks.index')}}">All Feedback</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -113,6 +147,9 @@
                                 </li>
                                 <li>
                                 <a href="{{route('jobs.trash')}}">Job Trash</a>
+                                </li>
+                                <li>
+                                <a href="{{route('videos.trash')}}">Video Trash</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->

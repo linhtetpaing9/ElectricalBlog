@@ -1,7 +1,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
   <div class="container">
-    <a class="navbar-brand" href="index.html">{{ config('app.name') }}</a>
+    <a class="navbar-brand" href="/"><img src="../img/blogging.png" alt=""></a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       Menu
       <i class="fa fa-bars"></i>
@@ -20,12 +20,16 @@
         <li class="nav-item">
           <a class="nav-link" href="{{route('jobs.job')}}"> အလုပ်အကိုင်များ</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{route('contacts.contact')}}">ကျွန်တော်တို့အကြောင်း</a>
+       <li class="nav-item">
+          <a class="nav-link" href="{{route('videos.video')}}"> ဗီဒီယို</a>
         </li>
+        {{-- <li class="nav-item">
+          <a class="nav-link" href="{{route('contacts.contact')}}">ကျွန်တော်တို့အကြောင်း</a>
+        </li> --}}
+        
         @if( Auth::check() )
           <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{Auth::user()->name}}</a>
+              <a class="nav-link dropdown-toggle" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User</a>
               <div class="dropdown-menu dropdown-menu-right scale-up">
                   <ul class="dropdown-user">
                     <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
@@ -36,11 +40,21 @@
                         {{ csrf_field() }}
                     </form>
                   </ul>
+                  <ul class="dropdown-user">
+                    <a href="/users/{{Auth::id()}}" >
+                    <i class="fa fa-cog"></i>
+                    Setting
+                    </a>
+                    
+                  </ul>
               </div>
           </li>
           @else
           <li class="nav-item">
-            <a href="/login" class="nav-link">Login</a>
+            <a href="/login" class="nav-link">Sign In</a>
+          </li>
+          <li class="nav-item">
+            <a href="/register" class="nav-link">Sign Up</a>
           </li>
           @endif
       </ul>

@@ -1,4 +1,7 @@
 
+<link href="{{ asset('css/main-page.css') }}" rel="stylesheet">
+
+
 <style>
 	@import url('https://mmwebfonts.comquas.com/fonts/?font=pyidaungsu');
 	@import url('https://mmwebfonts.comquas.com/fonts/?font=zawgyi');
@@ -14,10 +17,10 @@
 		overflow-x: hidden;
 		font-family: "Pyidaungsu","MON3 Anonta 1" !important;
 	}
-	h1,h2,h3,h4,h5,h6, li{
+	h1,h2,h3,h4,h5,h6, li, button{
 		font-family: "Pyidaungsu","MON3 Anonta 1" !important;
 	}
-	input{
+	input, textarea{
 		font-family: "Zawgyi-One" !important;
 	}
 	.scrollToTop{
@@ -35,11 +38,7 @@
 	    text-decoration:none;
 	}
 
-	.bc-icons-2 .breadcrumb-item + .breadcrumb-item::before {
-	    content: none; }
-	.bc-icons-2 .breadcrumb-item.active {
-	    color: #455a64; }
-</style>
-<link href="{{ asset('css/main-page.css') }}" rel="stylesheet">
 
+
+</style>
 @yield('css')

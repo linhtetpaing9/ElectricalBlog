@@ -11,6 +11,7 @@ class Book extends Model
     use SoftDeletes;
     protected $dates = ['deleted_at'];
     use TounicodeTrait;
+    protected $withCount = ['recommends'];
 
     /**
      * These are the attributes to convert before saving.
@@ -19,12 +20,6 @@ class Book extends Model
      */
     protected $convertable = ['book_name', 'author', 'storage_provider_name', 'review'];
     
-
-    public function reviews()
-    {
-        return $this->hasOne(Review::class);
-    }
-
     public function recommends()
     {
         return $this->morphMany('ElectricalBlog\Recommend', 'recommendable');
@@ -38,6 +33,11 @@ class Book extends Model
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'book_categories');
+    }
+
+    public function scopeFilter($query, $filters)
+    {
+        $filters->apply($query);
     }
 
     public function scopeGetDatatableQuery($query, $request)

@@ -1,4 +1,5 @@
 <template>
+  <div class="container">
     <div class="card">
       <ul class="list-group list-group-flush" >
         <li class="list-group-item">
@@ -14,7 +15,8 @@
         <span class="badge badge-pill badge-danger">{{category.posts_count | myanmarNumber}}</span>
         </li>
       </ul>
-    </div> 
+    </div>
+  </div>
 </template>
 
 <script>

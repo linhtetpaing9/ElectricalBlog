@@ -4,7 +4,7 @@
       
       
       <span class="badge bg-info" v-for="category in post.categories" :key="category.id + '-label'" v-text="category.name" style="margin-left: 10px"></span>
-      <p class="text-danger"> {{ post.recommends_count}} recommended </p>
+      <span class="badge bg-danger text-white" >{{post.recommends_count | myanmarNumber}}</span> recommended </p>
       <form @submit.prevent="onSubmitRecommend" v-if="isUserLogin">
         <input type="hidden" v-model="formRecommend.recommendable_id = this.post_id">
         <input type="hidden" v-model="formRecommend.recommendable_type = 'ElectricalBlog\\Post'">
@@ -12,6 +12,7 @@
         <input type="hidden" v-model="formRecommend.recommendable">
         <button type="submit" @click="recommendOption" :class="recommendSign" v-text="recommendText"></button>
       </form>
+      <small v-if="!isUserLogin"><a href="/login" class="text-info">Sign in</a> to recommend. Not Yet Register ? <a href="/register" class="text-info">Register Here</a></small>
       <br>
       <br>
       <div v-html="post.body"></div>
@@ -33,13 +34,11 @@
                 <h6 :class="{displayNone: display}">{{ issue.title }}</h6>
                 <h6 :class="{displayNone: display}">{{ issue.body }}</h6>
             </div>
-            <a href="javascript:void(0)">
-              <i class="fa fa-trash-o text-danger" style="float: right; font-size:20px"></i>
-            </a>
-            <a href="javascript:void(0)">
-            <i class="fa fa-edit text-info" style="float: right; margin-right: 10px;">
-            </i>
-            </a>
+            <form @submit.prevent="onDeleteIssue(issue.id)">
+              <button type="submit" class="btn small-button" style="float: right; font-size:20px">
+                <i class="fa fa-trash-o text-danger" ></i>
+              </button>
+            </form>
           </div>
             
           
@@ -55,23 +54,20 @@
                 <h6 class="text-muted time">1 minute ago</h6>
                 <h6 :class="{displayNone: display}">{{ reply.body }}</h6>
             </div>
-            <a href="javascript:void(0)">
-              <i class="fa fa-trash-o text-danger" style="float: right; font-size:20px"></i>
-            </a>
-            <a href="javascript:void(0)">
-            <i class="fa fa-edit text-info" style="float: right; margin-right: 10px;">
-            </i>
-            </a>
-            
+            <form @submit.prevent="onDeleteReply(issue.id, reply.id)">
+              <button type="submit" class="btn small-button" style="float: right; font-size:20px">
+                <i class="fa fa-trash-o text-danger" ></i>
+              </button>
+            </form>
           </div> 
         </div>
-        <div class="card-body"  style="border-top: 1px solid #e3e3e3">
+        <div class="card-body"  style="border-top: 1px solid #e3e3e3" v-if="isUserLogin">
           <form @submit.prevent="onSubmitReply" 
             @keydown="formReply.errors.clear($event.target.name)">
             <div class="form-body">
                 <div class="form-group">
                     <div class="col-md-12">
-                        <input type="text" class="form-control" name="body" v-model="formReply.body">
+                        <input type="text" class="form-control" name="body" @input="updateFormReply($event.target.value)">
                         <span class="help-block text-danger" 
                         v-show="formReply.errors.has('body')" 
                         v-text="formReply.errors.get('body')">
@@ -87,7 +83,8 @@
       </div>
 
       <br>
-      <div class="card boxShadow">
+      <small v-if="!isUserLogin"><a href="/login" class="text-info">Sign in</a> to ask. Not Yet Register ? <a href="/register" class="text-info">Register Here</a></small>
+      <div class="card boxShadow" v-if="isUserLogin">
         <div class="card-body">
           <div class="container">
             <form @submit.prevent="onSubmit" 
@@ -124,6 +121,7 @@
 </template>
 
 <script>
+  var myanmarNumbers = require("myanmar-numbers");
 
   export default {
     data(){
@@ -141,7 +139,7 @@
             recommendable_id: '',
             recommendable_type: 'ElectricalBlog\\Post',
             user_id: '',
-            recommendable: ''
+            recommendable: false
           }),
           post: [],
           user: [],
@@ -149,8 +147,8 @@
           post_id: window.location.href.split('posts/').pop(),
           displayNone: true,
           display: false,
-          recommendSign: '',
-          recommendText: '',
+          recommendSign: 'btn btn-secondary',
+          recommendText: 'Recommend',
 
         }
     },
@@ -169,6 +167,12 @@
           
         }
     },
+    filters: {
+      myanmarNumber(value) {
+        return myanmarNumbers(value, "my");
+        console.log(value);
+      }
+    },
     methods: {
         getIssue() {
           axios.get( '/api/posts/' + this.post_id + '/issues/replies' )
@@ -181,32 +185,40 @@
               .then( (response) => this.isCurrentUser(this.post.recommends, this.user))
               .catch( (error) => console.log(error) );
         },
+        updateFormReply(reply){
+          this.formReply.body = reply;
+        },
 
         onSubmit() {
             this.form.post( '/admin/posts/' + this.post_id + '/issues' )
                     .then( response => this.getIssue() );    
         },
-        onSubmitReply(){
+        onSubmitReply(event){
             this.formReply.post('/admin/replies')
                     .then( response => this.getIssue());
+            event.target.reset();
         },
         onSubmitRecommend(){
             this.formRecommend.post('/admin/recommends')
                     .then( response => this.getIssue());
         },
+        onDeleteIssue(issue_id){
+            axios.delete('/posts/' + this.post_id + '/issues/' + issue_id)
+                .then( response => this.getIssue());
+        },
+        onDeleteReply(issue_id, reply_id){
+            axios.delete('/posts/' + this.post_id + '/issues/' + issue_id + '/replies/' + reply_id)
+                .then( response => this.getIssue());
+        },
         
         isCurrentUser(recommends , user){
           if(recommends.length > 0){
             for(var i=0; i<recommends.length; i++){
-              // console.log(user);
+              console.log(user.id === recommends[i].user_id);
               if( user.id === recommends[i].user_id){
                 this.recommendText = 'Recommended';
                 this.recommendSign = 'btn btn-success';
                 this.formRecommend.recommendable = true;
-              }else if(user.id !== recommends[i].user_id){
-                this.recommendText = 'Recommend';
-                this.recommendSign = 'btn btn-secondary';
-                this.formRecommend.recommendable = false;
               }
             }
           }else{
@@ -237,5 +249,12 @@
   .boxShadow{
     padding: 15px;
     box-shadow: 0px 0px 20px -5px grey;
+  }
+  .small-button{
+    padding: 5px 8px 5px 8px;
+    background: white
+  }
+  a{
+    text-decoration: none;
   }
 </style>

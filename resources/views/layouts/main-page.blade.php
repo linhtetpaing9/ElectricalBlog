@@ -11,12 +11,11 @@
   </head>
 
   <body>
-
+    
     @include('layouts.nav')
 
-    @yield('header')
-    {{-- @include('layouts.breadcrumb') --}}
 
+    @yield('header')
     <!-- Main Content -->
     <div class="container">
       <div class="row">

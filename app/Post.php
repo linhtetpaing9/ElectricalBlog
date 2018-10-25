@@ -12,6 +12,7 @@ class Post extends Model
     use SoftDeletes;
     protected $dates = ['deleted_at'];
     use TounicodeTrait;
+    protected $withCount = ['recommends'];
 
     /**
      * These are the attributes to convert before saving.
@@ -27,7 +28,6 @@ class Post extends Model
 
     public function scopeFilter($query, $filters)
     {
-        // dd($filters);
         $filters->apply($query);
     }
     

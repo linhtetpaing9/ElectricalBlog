@@ -11,6 +11,7 @@
         <div class="post-preview" v-for="job in jobs">
           <a :href="jobUrl + job.id">
             <h2 class="post-title"> {{ job.title }} </h2>
+            <span class="badge bg-danger text-white" >{{job.recommends_count | myanmarNumber}}</span> recommended </p>
             <span class="text-success">continue reading</span>
           </a>
           <br>

@@ -4,9 +4,11 @@ namespace ElectricalBlog\Http\Controllers;
 
 use ElectricalBlog\Book;
 use ElectricalBlog\Category;
+use ElectricalBlog\Feedback;
 use ElectricalBlog\Issue;
 use ElectricalBlog\Job;
 use ElectricalBlog\Post;
+use ElectricalBlog\Video;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -17,12 +19,6 @@ class ApiController extends Controller
         return $categories;
     }
 
-    public function countCategoriesByJobs()
-    {
-        $categories = Category::withCount('jobs')->get(['name', 'id']);
-        return $categories;
-    }
-
     public function searchPostsByCategories()
     {
         return Post::with('categories')->latest()->take(10)->get();
@@ -30,9 +26,7 @@ class ApiController extends Controller
 
     public function postIndex(Post $post)
     {
-        return Post::with(['issues.reply', 'categories', 'recommends'])
-                    ->withCount('recommends')
-                    ->findOrFail($post->id);
+        return Post::with(['issues.reply', 'categories', 'recommends'])->findOrFail($post->id);
     }
 
     public function postDatatable(Request $request)
@@ -45,26 +39,20 @@ class ApiController extends Controller
         return Post::onlyTrashed()->getTrashDatatableQuery($request);
     }
 
-    public function IssueTrashDatatable(Request $request)
+    public function countCategoriesByBooks()
     {
-        return Issue::onlyTrashed()->getTrashDatatableQuery($request);
+        $categories = Category::withCount('books')->get(['name', 'id']);
+        return $categories;
     }
 
-    public function issueDatatable(Request $request)
+    public function searchBooksByCategories()
     {
-        return Issue::getDatatableQuery($request);
-    }
-
-    public function replyDatatable(Request $request)
-    {
-        return Reply::getDatatableQuery($request);
+        return Book::with('categories')->latest()->get();
     }
 
     public function bookIndex(Book $book)
     {
-        return Book::with(['categories', 'recommends'])
-                    ->withCount('recommends')
-                    ->findOrFail($book->id);
+        return Book::with(['categories', 'recommends'])->findOrFail($book->id);
     }
 
     public function bookDatatable(Request $request)
@@ -75,6 +63,12 @@ class ApiController extends Controller
     public function bookTrashDatatable(Request $request)
     {
         return Book::onlyTrashed()->getTrashDatatableQuery($request);
+    }
+
+    public function countCategoriesByJobs()
+    {
+        $categories = Category::withCount('jobs')->get(['name', 'id']);
+        return $categories;
     }
 
     public function jobDatatable(Request $request)
@@ -92,13 +86,61 @@ class ApiController extends Controller
         return Job::with('categories')->latest()->get();
     }
 
-    public function JobIndex(Job $job)
+    public function jobIndex(Job $job)
     {
-        return Job::with('categories')->findOrFail($job->id);
+        return Job::with(['categories', 'recommends'])->findOrFail($job->id);
+    }
+
+    public function countCategoriesByVideos()
+    {
+        $categories = Category::withCount('videos')->get(['name', 'id']);
+        return $categories;
+    }
+
+    public function videoDatatable(Request $request)
+    {
+        return Video::getDatatableQuery($request);
+    }
+
+    public function videoTrashDatatable(Request $request)
+    {
+        return Video::onlyTrashed()->getTrashDatatableQuery($request);
+    }
+
+    public function searchVideosByCategories()
+    {
+        return Video::with('categories')->latest()->get();
+    }
+
+    public function videoIndex(Video $video)
+    {
+        return Video::with(['categories', 'recommends'])
+                    
+                    ->findOrFail($video->id);
+    }
+
+    public function issueTrashDatatable(Request $request)
+    {
+        return Issue::onlyTrashed()->getTrashDatatableQuery($request);
+    }
+
+    public function issueDatatable(Request $request)
+    {
+        return Issue::getDatatableQuery($request);
+    }
+
+    public function replyDatatable(Request $request)
+    {
+        return Reply::getDatatableQuery($request);
     }
 
     public function categories()
     {
         return Category::all();
+    }
+
+    public function feedbacks()
+    {
+        return Feedback::latest()->get();
     }
 }

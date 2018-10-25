@@ -1,7 +1,6 @@
 @extends('layouts.main-page')
 
 @section('css')
-{{-- <link rel="stylesheet" href="https://cdn.plyr.io/3.4.4/plyr.css"> --}}
 <style>
 section{
   padding: 60px 0;
@@ -108,7 +107,7 @@ section .section-title{
   <section id="what-we-do">
     <div class="container-fluid">
       <h2 class="section-title mb-2 h1"> ဘာတွေများရှိသလဲ</h2>
-      <p class="text-center text-muted h5">တက်သစ်စ အင်ဂျင်နီယာလောင်းလေး များသာမက လုပ်ငန်းခွင်မှာလက်ရှိလုပ်ကိုင်ပြီး Theory ပိုင်းဆိုင်ရာအားနည်းသူများအတွက်ပါအထောက်အကူပြုနိုင်မည်မျှော်လင့်ပါသည်။</p>
+      <p class="text-center text-muted h5"></p>
       <div class="row mt-5">
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
           <div class="card">
@@ -153,7 +152,11 @@ section .section-title{
             <div class="card-block block-5">
               <h3 class="card-title">တုံ့ပြန်ချက်</h3>
               <p class="card-text">ဒီဆိုဒ်လေးကောင်းအောင် အမြဲကြိုးစားနေသည်ဖြစ်ပါသောကြောင့်လိုအပ်ချက်များကို ပေးပို့ဆက်သွယ်နိုင်ပါသည်။</p>
-              <a href="javascript:void();" title="ဆက်ရန်.." class="read-more" >ဆက်ရန်..<i class="fa fa-angle-double-right ml-2"></i></a>
+              @if(Auth::check())
+              <a href="javascript:void();" title="ပေးပို့မည်.." data-toggle="modal" data-target="#feedbackSubmit" class="read-more" >ပေးပို့မည်..<i class="fa fa-angle-double-right ml-2"></i></a>
+              @else
+              <span><a href="/login">Sign in</a> to feedback</span>
+              @endif
             </div>
           </div>
         </div>
@@ -169,18 +172,44 @@ section .section-title{
       </div>
     </div>  
   </section>
-  <div class="plyr__video-embed" id="player">
-    <iframe src="https://www.youtube.com/embed/zxkV45xc96M?origin=https://plyr.io&amp;iv_load_policy=3&amp;modestbranding=1&amp;playsinline=1&amp;showinfo=0&amp;rel=0&amp;enablejsapi=1" 
-    allowfullscreen allowtransparency allow="autoplay"></iframe>
+
+
+<!-- Modal -->
+<div class="modal fade" id="feedbackSubmit" tabindex="-1" role="dialog" aria-labelledby="feedbackSubmitTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"> လိုအပ်ချက်များပေးပို့ရန်</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{{route('feedbacks.feedback')}}" method="POST">
+          @csrf
+          <div class="form-body">
+            <label for="title">အကြောင်းအရာ</label>
+            <input type="text" class="form-control" name="title">
+          </div>
+          <div class="form-body">
+            <label for="body">အသေးစိတ်အချက်အလက်</label>
+            <textarea name="body" class="form-control" ></textarea>
+          </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">ပိတ်မည်</button>
+        <button type="submit" class="btn btn-primary">ပေးပို့မည်</button>
+        </form>
+      </div>
+    </div>
   </div>
-
-
+</div>
 
 @endsection
 
 
 @section('script')
  <script src="{{ asset('js/app.js') }}" defer></script>
-{{-- <script src="https://cdn.plyr.io/3.4.4/plyr.js"></script> --}}
-<script>const player = new Plyr('#player');</script>
+
 @endsection

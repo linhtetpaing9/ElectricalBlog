@@ -26,9 +26,11 @@
 
 <div class="col-lg-10 col-md-12 mx-auto">
   <article>
+    @can('update', $post)
     <div class="row">
       <a href="{{route('posts.edit', $post->id)}}" class="btn btn-info text-white"><i class="fa fa-edit">Edit Post</i></a>
     </div>
+    @endcan
       <div id="app">
           <post-show-component></post-show-component>
       </div>
@@ -64,5 +66,6 @@
         }
       });
     }
+    
  </script>
 @endsection
