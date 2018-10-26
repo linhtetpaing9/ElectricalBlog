@@ -11,7 +11,7 @@
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
         <div class="site-heading">
-          <h1>Books</h1>
+          <h1><img src="../img/books.png" alt=""> Books</h1>
           <span class="subheading" id="quoteDisplay"></span>
         </div>
       </div>

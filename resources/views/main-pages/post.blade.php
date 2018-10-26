@@ -12,8 +12,8 @@
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
         <div class="site-heading">
-          <h1>{{ config('app.name') }}</h1>
-          <span class="subheading">Your Electrical Career Personal Guide</span>
+          <h1><img src="../img/blog.png" alt=""> Post</h1>
+          <span class="subheading" id="quoteDisplay"></span>
         </div>
       </div>
     </div>
@@ -38,5 +38,5 @@
 
 @section('script')
  <script src="{{ asset('js/app.js') }}" defer></script>
-<script src="https://unpkg.com/rabbit-node@1.0.3/dist/rabbit.min.js"></script>
+ <script src="{{ asset('js/quotes.js') }}"></script>
 @endsection

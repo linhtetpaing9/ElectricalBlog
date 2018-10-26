@@ -7,7 +7,7 @@ section{
 }
 section .section-title{
   text-align:center;
-  color:#17a2b8;
+  color:#2c5da5;
   margin-bottom:50px;
   text-transform:uppercase;
 }
@@ -32,7 +32,7 @@ section .section-title{
     position: relative;
 }
 #what-we-do .card .card-block a{
-  color: #17a2b8 !important;
+  color: #2c5da5 !important;
   font-weight:700;
   text-decoration:none;
 }
@@ -49,7 +49,7 @@ section .section-title{
   font-family: FontAwesome;
     position: absolute;
     font-size: 39px;
-    color: #17a2b8;
+    color: #2c5da5;
     left: 0;
   -webkit-transition: -webkit-transform .2s ease-in-out;
     transition:transform .2s ease-in-out;
@@ -143,7 +143,7 @@ section .section-title{
             <div class="card-block block-4">
               <h3 class="card-title">ဗီဒီယို</h3>
               <p class="card-text">မြန်မာဘာသာ စာတန်းထိုး ဗဟုသုတရာဖွယ်ရာ ဗီဒီယိုများ ကြည့်နိုင်ပါသည်။</p>
-              <a href="javascript:void();" title="ဆက်ရန်.." class="read-more" >ဆက်ရန်..<i class="fa fa-angle-double-right ml-2"></i></a>
+              <a href="{{route('videos.video')}}" title="ဆက်ရန်.." class="read-more" >ဆက်ရန်..<i class="fa fa-angle-double-right ml-2"></i></a>
             </div>
           </div>
         </div>

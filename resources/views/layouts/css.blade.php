@@ -1,5 +1,6 @@
 
 <link href="{{ asset('css/main-page.css') }}" rel="stylesheet">
+<link rel="icon" href="../img/blogging.png">
 
 
 <style>
