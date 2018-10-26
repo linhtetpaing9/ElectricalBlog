@@ -3,10 +3,13 @@
   <div>
     <br>
       <div class="row">
-        <div class="col-lg-4">
-          <img :src="book.book_image" width="250" height="250">
+        <div class="col-lg-12">
+          <img :src="book.book_image" >
         </div>
-        <div class="col-lg-8">
+      </div>
+      <div class="row">
+        
+        <div class="col-lg-12">
           <h2 v-text="book.book_name"></h2>
           <h4 class="text-success" v-text="book.author"></h4>
           <span class="badge bg-info" v-for="category in book.categories" :key="category.id + '-label'" v-text="category.name" style="margin-left: 10px"></span>
