@@ -117,9 +117,6 @@
 
             });
         }
-      $('.myclass').select2({
-        tags: true
-      });
 
     });
       $('.myclass').select2({
