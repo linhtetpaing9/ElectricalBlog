@@ -49,7 +49,7 @@
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Password Confirmation" name="password_confirmation" type="password">
                                 </div>
-                                <div class="form-group row  {{ $errors->has('avatar') ? ' is-invalid' : '' }}">
+                                {{-- <div class="form-group row  {{ $errors->has('avatar') ? ' is-invalid' : '' }}">
                                     <div class="col-md-12">
                                         <input id="avatar" type="file" class="form-control" name="avatar">
                                     </div>
@@ -58,7 +58,7 @@
                                         <strong>{{ $errors->first('avatar') }}</strong>
                                     </span>
                                 @endif
-                                </div>
+                                </div> --}}
                                 <!-- Change this to a button or input when using this as a form -->
                                 <div class="form-submit">
                                     <button class="btn btn-lg btn-success btn-block">Register</button>

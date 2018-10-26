@@ -204,11 +204,15 @@ body {
       <div class="profile-content">
        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
       <li class="nav-item">
-        <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Home</a>
+        <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Activities</a>
       </li>
+      @if(Auth::check())
+        @if(Auth::user()->is_admin)
       <li class="nav-item">
         <a class="nav-link" id="pills-setting-tab" data-toggle="pill" href="#pills-setting" role="tab" aria-controls="pills-setting" aria-selected="false">Setting</a>
       </li>
+        @endif
+      @endif
       <li class="nav-item">
         <a class="nav-link" id="pills-bookmark-tab" data-toggle="pill" href="#pills-bookmark" role="tab" aria-controls="pills-bookmark" aria-selected="false">FeedBack</a>
       </li>
@@ -217,9 +221,13 @@ body {
       <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
         @include('users.homepage')
       </div>
+      @if(Auth::check())
+        @if(Auth::user()->is_admin)
       <div class="tab-pane fade" id="pills-setting" role="tabpanel" aria-labelledby="pills-setting-tab">
         @include('users.setting')
       </div>
+        @endif
+      @endif
       <div class="tab-pane fade" id="pills-bookmark" role="tabpanel" aria-labelledby="pills-bookmark-tab">
         @include('users.feedback')
       </div>
