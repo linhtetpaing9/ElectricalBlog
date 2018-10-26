@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
             'name' => 'Lin Htet Paing',
             'email' => 'linhtetpaing9@gmail.com',
             'password' => Hash::make('linhtet12345'),
+            'slug' => str_slug('Lin Htet Paing', "-") . "-" . uniqid(),
             'is_admin' => true
         ]);
 
