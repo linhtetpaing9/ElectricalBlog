@@ -16,9 +16,7 @@
           Book Edit
         </div>
         <div class="panel-body"><div class="form-group">
-          <textarea id="mymce" name="review" ></textarea>
-          {{-- <input type="text" name="body" style="display: none"> --}}
-        </div>
+          
           <form action="{{route('books.update', $book->id)}}" id="form-data" method="POST">
             @method('PATCH')
             @csrf
