@@ -64,10 +64,14 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        // dd($data);
+        $data['slug'] = str_slug($data['name'], "-") . "-" . uniqid();
+        // dd($data['slug']);
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'slug' => $data['slug']
         ]);
         
         // if (isset($data['avatar'])) {

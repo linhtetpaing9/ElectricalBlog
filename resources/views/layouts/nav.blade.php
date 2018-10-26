@@ -41,7 +41,7 @@
                     </form>
                   </ul>
                   <ul class="dropdown-user">
-                    <a href="/users/{{Auth::id()}}" >
+                    <a href="/users/{{Auth::user()->slug}}" >
                     <i class="fa fa-cog"></i>
                     Setting
                     </a>

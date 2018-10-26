@@ -18,7 +18,7 @@ class User extends Authenticatable implements HasMedia
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'slug'
     ];
 
     /**
@@ -77,5 +77,10 @@ class User extends Authenticatable implements HasMedia
         if ($this->roles() != null) {
             $user_policy = $this->roles();
         }
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }
