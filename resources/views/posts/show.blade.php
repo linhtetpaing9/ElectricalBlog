@@ -32,7 +32,7 @@
     </div>
     @endcan
       <div id="app">
-          <post-show-component></post-show-component>
+          <post-show-component post_id="{{$post->id}}"></post-show-component>
       </div>
 
   </article>

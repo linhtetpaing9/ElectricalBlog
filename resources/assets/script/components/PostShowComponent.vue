@@ -127,7 +127,9 @@
   var myanmarNumbers = require("myanmar-numbers");
 
   export default {
+    props: ['post_id'],
     data(){
+
         return {
           form: new Form({
             title: '',
@@ -147,7 +149,6 @@
           post: [],
           user: [],
           currentUser: false,
-          post_id: window.location.href.split('posts/').pop(),
           displayNone: true,
           display: false,
           recommendSign: 'btn btn-secondary',
