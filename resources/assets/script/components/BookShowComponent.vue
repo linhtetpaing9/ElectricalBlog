@@ -31,8 +31,7 @@
       <br>
       <div v-html="book.review"></div>
       <br>
-      <small v-if="!isUserLogin"><a href="/login" class="text-info">Sign in</a> to <span class="text-danger">DownLoad</span>. Not Yet Register ? <a href="/register" class="text-info">Register Here</a></small> 
-      <a :href="book.book_link" class="btn btn-success text-white" v-if="isUserLogin">Download The Book</a>
+      <a :href="book.book_link" class="btn btn-success text-white" >Download The Book</a>
       <p class="text-info">Credit to the book author <span class="text-primary">{{book.author}}</span></p>
 </div>
 </template>
