@@ -26,9 +26,9 @@ class BookRequest extends FormRequest
         return [
             'book_name' => 'required',
             'book_link' => 'required',
-            'storage_provider_name' => 'required',
-            'page_image' => 'required',
-            'review' => 'required',
+            'storage_provider_name' => '',
+            'page_image' => '',
+            'review' => '',
         ];
     }
 }

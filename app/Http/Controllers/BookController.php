@@ -43,10 +43,10 @@ class BookController extends Controller
         $book->update([
             'book_name' => $request->book_name,
             'book_link' => $request->book_link,
-            'book_image' => $request->page_image,
-            'author' => $request->author,
-            'storage_provider_name' => $request->storage_provider_name,
-            'review' => $request->review,
+            'book_image' => $request->page_image ?? '',
+            'author' => $request->author ?? '',
+            'storage_provider_name' => $request->storage_provider_name ?? '',
+            'review' => $request->review ?? '',
         ]);
         $book->categories()->sync($request->categories);
         return Redirect::route('books.index');
@@ -59,10 +59,10 @@ class BookController extends Controller
         $book = Book::create([
             'book_name' => $request->book_name,
             'book_link' => $request->book_link,
-            'book_image' => $request->page_image,
-            'author' => $request->author,
-            'storage_provider_name' => $request->storage_provider_name,
-            'review' => $request->review,
+            'book_image' => $request->page_image ?? '',
+            'author' => $request->author ?? '',
+            'storage_provider_name' => $request->storage_provider_name ?? '',
+            'review' => $request->review ?? '',
         ]);
         $book->categories()->sync($request->categories);
         return Redirect::route('books.index');
